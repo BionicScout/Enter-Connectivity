@@ -2,8 +2,8 @@ const http = require('http');
 
 const server = http.createServer((req, res) => {
     console.log("Request Made");
-    console.log(req.url, req.method); 
-    
+    console.log(req.url, req.method);
+
     //Try localhost:3000/about
 
     //Set Header type to plain
@@ -21,6 +21,7 @@ const server = http.createServer((req, res) => {
 });
 
 //(port number, host name, ...)
-server.listen(3000, 'localhost', () => {
-    console.log("Listening for request on port 3000");
+port = 4870;
+server.listen(port, 'localhost', () => {
+    console.log("Listening for request on port "+port);
 });
