@@ -1,9 +1,6 @@
-const { error } = require('console');
-const fs = require('fs');
-
-writeContacts("john","pass")
-
-function readContacts(username, password){
+import error from "console";
+import fs from "fs";
+export function readContacts(username, password){
   fs.readFile("./Contacts/"+username+".txt", (err, data) => {
     if(err) {
         console.log(err);
@@ -12,7 +9,7 @@ function readContacts(username, password){
 });
 }
 
-function writeContacts(username, password){
+export function writeContacts(username, password,data){
   if(fs.existsSync("./Contacts/"+username+".txt")){
     fs.unlink("./Contacts/"+username+".txt", (err) => {
         if(err){
@@ -23,6 +20,9 @@ function writeContacts(username, password){
 }
 
     fs.writeFile("./Contacts/"+username+".txt",password, () => {
+        console.log('file was created');
+    })
+    fs.appendFile("./Contacts/"+username+".txt",data, () => {
         console.log('file was created');
     })
 }
