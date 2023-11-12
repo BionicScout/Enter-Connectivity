@@ -9,7 +9,6 @@ fs.readFile("./fileTest_Folder/fileTest_text.txt", (err, data) => {
     }
     console.log(data.toString());
 });
- 
 
 //Directories
 if(!fs.existsSync('./assets')){ //Create Direrctory if it doesn't exsit
