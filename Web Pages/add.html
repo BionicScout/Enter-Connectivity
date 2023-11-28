@@ -27,6 +27,85 @@
 
     <h1>Add Page</h1>
 
+    <div class="container">
+        <form class="row g-3 needs-validation" novalidate>
+            <!-- Name Input -->
+            <div class="col-md-6">
+              <label for="validationCustom01" class="form-label">Name</label>
+              <input type="text" class="form-control" id="validationCustom01" required>
+            </div>
+              
+            <!-- Birtday -->
+            <div class="col-md-3">
+              <label for="validationBirthday" class="form-label">Birthday</label>
+              <div class="input-group has-validation">
+                <input type="date" class="form-control" id="validationBirthday" aria-describedby="inputGroupPrepend" required>
+              </div>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="col-md-3">
+                <label for="validationPhoneNumber" class="form-label">Phone Number (###-###-####)</label>
+                <div class="input-group has-validation">
+                  <input type="tel" class="form-control" id="validationPhoneNumber" pattern="\d{3}[\-]\d{3}[\-]\d{4}" aria-describedby="inputGroupPrepend" required>
+                </div>
+              </div>
+
+            <!-- Email -->
+            <div class="col-md-12">
+              <label for="validationEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="validationEmail" required>
+              <div class="invalid-feedback">
+                Please provide a valid email address
+              </div>
+            </div>
+
+            <!-- Last Contact Date -->
+            <div class="col-md-2">
+                <label for="validationLastContact" class="form-label">Last Contacted</label>
+                <div class="input-group has-validation">
+                    <input type="date" class="form-control" id="validationLastContact" aria-describedby="inputGroupPrepend" required>
+                </div>
+            </div>
+
+             <!--  conContact Frequency -->
+            <div class="col-md-4">
+              <label for="validationFrequency" class="form-label">How often do you want to contact? (In Days)</label>
+              <input type="number" class="form-control" id="validationFrequency" required>
+              <div class="invalid-feedback">
+                Please provide a valid number
+              </div>
+            </div>
+
+            <div class="col-12">
+              <button class="btn btn-primary" type="submit">Submit form</button>
+            </div>
+          </form>
+
+    </div>
+
+    <script>
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
