@@ -31,8 +31,8 @@
         <form class="row g-3 needs-validation" novalidate>
             <!-- Name Input -->
             <div class="col-md-6">
-              <label for="validationCustom01" class="form-label">Name</label>
-              <input type="text" class="form-control" id="validationCustom01" required>
+              <label for="validationName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="validationName" placeholder="ex. John Doe" required>
             </div>
               
             <!-- Birtday -->
@@ -45,16 +45,16 @@
 
             <!-- Phone Number -->
             <div class="col-md-3">
-                <label for="validationPhoneNumber" class="form-label">Phone Number (###-###-####)</label>
+                <label for="validationPhoneNumber" class="form-label">Phone Number</label>
                 <div class="input-group has-validation">
-                  <input type="tel" class="form-control" id="validationPhoneNumber" pattern="\d{3}[\-]\d{3}[\-]\d{4}" aria-describedby="inputGroupPrepend" required>
+                  <input type="tel" class="form-control" id="validationPhoneNumber" pattern="\d{3}[\-]\d{3}[\-]\d{4}" aria-describedby="inputGroupPrepend" placeholder="###-###-####" required>
                 </div>
               </div>
 
             <!-- Email -->
             <div class="col-md-12">
               <label for="validationEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="validationEmail" required>
+              <input type="email" class="form-control" id="validationEmail" placeholder="ex. john@gmail.com" required>
               <div class="invalid-feedback">
                 Please provide a valid email address
               </div>
@@ -68,17 +68,18 @@
                 </div>
             </div>
 
-             <!--  conContact Frequency -->
+             <!--  Contact Frequency -->
             <div class="col-md-4">
               <label for="validationFrequency" class="form-label">How often do you want to contact? (In Days)</label>
-              <input type="number" class="form-control" id="validationFrequency" required>
+              <input type="number" class="form-control" min="1" max="365" id="validationFrequency" value="30" required>
               <div class="invalid-feedback">
-                Please provide a valid number
+                Please provide a number between 1 and 365
               </div>
             </div>
 
+            <!-- Submit Button -->
             <div class="col-12">
-              <button class="btn btn-primary" type="submit">Submit form</button>
+              <button class="btn btn-primary" type="button" id="SubmitButton">Submit form</button>
             </div>
           </form>
 
@@ -96,14 +97,53 @@
                 .forEach(function (form) {
                 form.addEventListener('submit', function (event) {
                     if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
+                        event.preventDefault()
+                        event.stopPropagation()
                     }
 
                     form.classList.add('was-validated')
                 }, false)
             })
         })()
+    </script>
+
+    <script>
+        $('#SubmitButton').on('click', function (e) {
+            var forms = [document.getElementById('validationName'), 
+                         document.getElementById('validationBirthday'),
+                         document.getElementById('validationPhoneNumber'),
+                         document.getElementById('validationEmail'),
+                         document.getElementById('validationLastContact'),
+                         document.getElementById('validationFrequency')];
+            
+            var valid = true;
+            for (let i = 0; i < forms.length; i++) {
+                if (!forms[i].checkValidity()) {
+                    forms[i].reportValidity();
+                    valid = false;
+                }
+            }
+
+            if(valid){
+
+            
+                var info = "[";
+                info += document.getElementById('validationName').value + ", "
+                info += document.getElementById('validationBirthday').value + ", "
+                info += document.getElementById('validationPhoneNumber').value + ", "
+                info += document.getElementById('validationEmail').value + ", "
+                info += document.getElementById('validationLastContact').value + ", "
+                info += document.getElementById('validationFrequency').value + "]"
+
+                console.log(info);
+
+
+                window.location.href="contacts.html";
+            }
+            else{
+                console.log("Not Valid Submission");
+            }
+        })
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
