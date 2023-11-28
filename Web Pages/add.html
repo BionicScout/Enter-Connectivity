@@ -93,15 +93,36 @@
             var forms = document.querySelectorAll('.needs-validation')
 
             // Loop over them and prevent submission
+            var valid = true;
             Array.prototype.slice.call(forms)
                 .forEach(function (form) {
                 form.addEventListener('submit', function (event) {
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
+                        valid = false;
                     }
 
                     form.classList.add('was-validated')
+
+
+
+                    if(valid){            
+                      var info = "[";
+                      info += document.getElementById('validationName').value + ", "
+                      info += document.getElementById('validationBirthday').value + ", "
+                      info += document.getElementById('validationPhoneNumber').value + ", "
+                      info += document.getElementById('validationEmail').value + ", "
+                      info += document.getElementById('validationLastContact').value + ", "
+                      info += document.getElementById('validationFrequency').value + "]"
+
+                      console.log(info);
+
+                      window.location="contacts.html";
+                    }
+                    else{
+                      console.log("Not Valid Submission");
+                    }
                 }, false)
             })
         })()
@@ -109,17 +130,19 @@
 
     <script>
         $('#SubmitButton').on('click', function (e) {
-            var forms = [document.getElementById('validationName'), 
+            var forms = /*[document.getElementById('validationName'), 
                          document.getElementById('validationBirthday'),
                          document.getElementById('validationPhoneNumber'),
                          document.getElementById('validationEmail'),
                          document.getElementById('validationLastContact'),
-                         document.getElementById('validationFrequency')];
+                         document.getElementById('validationFrequency')];*/
+                         document.querySelectorAll('.needs-validation');
             
             var valid = true;
             for (let i = 0; i < forms.length; i++) {
                 if (!forms[i].checkValidity()) {
-                    forms[i].reportValidity();
+                    //forms[i].reportValidity();
+                    forms[i].classList.add('was-validated')
                     valid = false;
                 }
             }
