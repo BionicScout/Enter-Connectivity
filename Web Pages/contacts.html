@@ -34,14 +34,15 @@
         </div>
 
         <!-- List of Contacts -->
-        <ul class="list-group mx-5">
+        <ul class="list-group mx-5" id="ContactList">
+
             <li class="list-group-item mx-5">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">Name</h5>
                     <p class="fs-6 pb-0 mb-0">Last Contacted</p>
                 </div>
                 <div class="d-flex justify-content-between pr-0 mr-0">
-                    <p class="p-0 m-0">Relationship</p>
+                    <p class="p-0 m-0"></p>
                     <div class="d-flex align-items-center">
                         <a class="btn py-1 px-0 m-0" role="button" href="Edit.html">
                             <img src="/Assests/Edit.png" alt="" width="19" height="18" >
@@ -52,30 +53,10 @@
                     </div>
                 </div>              
             </li>
-            <li class="list-group-item mx-5">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Roman Higginson</h5>
-                    <small>0 Days Ago</small>
-                </div>
-                <p class="mb-1">Myself</p>
-            </li>
-            <li class="list-group-item mx-5">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Milan Jostes</h5>
-                    <small>5 Days Ago</small>
-                </div>
-                <p class="mb-1">Friend</p>
-            </li>
-            <li class="list-group-item mx-5">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Hunter Higginson</h5>
-                    <small>1 Month Ago</small>
-                </div>
-                <p class="mb-1">Brother</p>
-            </li>
         </ul>
 
         <!-- Update Last Date Contacted -->
+        <!--
         <div class="container bg-secondary position-absolute top-50 start-50 translate-middle w-25 h-25" id="updateDate"> 
             <div class="row my-4">
                 <p class="display-5">Last Contact Date</p>
@@ -85,12 +66,70 @@
             </div>
             
         </div>
+        -->
     </div>
 
+
+    <template>
+        <li class="list-group-item mx-5">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-0" id="Name">Name</h5>
+                <p class="fs-6 pb-0 mb-0" id="LastContactDate">Last Contacted</p>
+            </div>
+            
+            <div class="d-flex justify-content-between pr-0 mr-0">
+                <p class="p-0 m-0"></p>
+                <div class="d-flex align-items-center">
+                    <a class="btn py-1 px-0 m-0" role="button" href="Edit.html">
+                        <img src="/Assests/Edit.png" alt="" width="19" height="18" >
+                    </a>
+                    <a class="btn px-0 m-0" role="button" data-toggle="collapse" href="#updateDate" aria-expanded="false" aria-controls="updateDate">
+                        <img src="/Assests/Update.png" alt="" width="17" height="17" >
+                    </a>
+                </div>
+            </div>              
+        </li>
+    </template>
+    
     <script>
+        const userNumberElements = document.querySelector('#ContactList');
+        const userNumberElementTemplate = document.querySelector('template');
+
+        function createNewElementCloneNode(contactInfo) {
+
+
+            let template = document.getElementsByTagName("template")[0];
+            let contact = template.content.cloneNode(true);
+
+            contact.getElementById("Name").innerHTML = contactInfo[0];
+
+            var today = new Date();
+            let timeSincecontact = (today.getTime() - contactInfo[4].getTime()) / (1000 * 60 * 60 * 24);
+            contact.getElementById("LastContactDate").innerHTML = Math.floor(timeSincecontact) + " Days";
+
+
+
+
+            let parent = document.getElementById("ContactList");
+            parent.appendChild(contact);
+
+        }
+
         window.onload = function() {
             console.log(sessionStorage.getItem('username'));
             console.log(sessionStorage.getItem('password'));
+
+            //Get Contact List
+            const contactList = [
+                ["Roman Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 1, 0, 0, 0, 0), 30],
+                ["Milan Jostes", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 27, 0, 0, 0, 0), 30],
+                ["Hunter Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 8, 1, 0, 0, 0, 0), 30]
+            ]
+
+            //Add each Contact to page
+            contactList.forEach(element => {
+                createNewElementCloneNode(element);
+            });
         }
     </script>
 
