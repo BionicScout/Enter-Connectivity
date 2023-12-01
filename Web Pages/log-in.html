@@ -13,39 +13,76 @@
         });
     </script> 
 
-<head>
-    <title>log-in</title>
+    <head>
+        <title>Enter-Connectivity</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-</head>
-<body>
-    <!-- Add Header  -->
-    <div id="header"></div>
+        <!-- Load BootStrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+        <style>
+            /* Width for input fields */
+            .custom-input {
+                width: 300px;
+            }
+
+            /* Hide Error Messages on Load  */
+            .error-message {
+                display: none;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <!-- Add Header  -->
+        <div id="header"></div>
 
         <!-- Login -->
-            <form class="needs-validation border border-2 m-5">
-                <div class="display-4 text-center">Log In</div>
+        <div class="container d-flex justify-content-center align-items-center vh-50">
+            <form class="needs-validation border border-2 my-4 p-2">
+
+                <!-- Title -->
+                <div class="display-4 text-center mb-2">Log In</div>
+
+                <!-- Login Inputs -->
                 <div class="vstack gap-3">
-                    <div class="justify-content-center">
-                        <input type="text" class="form-control" id="Username" placeholder="Username" pattern="[A-Za-z0-9_-]+" required>
+
+                    <!-- Username Input -->
+                    <div class="custom-input">
+                        <input type="text" class="form-control " id="Username" placeholder="Username" pattern="[A-Za-z0-9_-]+" required>
                     </div>
-                    <div class="justify-content-center">
+
+                    <!-- Password Input -->
+                    <div class=" my-1 custom-input">
                         <input type="password" class="form-control" id="Password" placeholder="Password" required>
                     </div>
-                    <div class="justify-content-center">
+
+                    <!-- Login Button -->
+                    <div>
                         <input class="btn btn-primary" type="button" value="Log In" id="LoginButton">
                     </div>
                 </div>
+
+                <!-- Sign Up Link -->
+                <a class="small" href="sign-up.html">Don't have an account? Sign Up</a>
+
+                <!-- Incorrect Username/Password Match Error -->
+                <div id="error-message" class="error-message">Incorrect Username or Password</div>
+
             </form>
+        </div>
 
 
         <script>
+            //When the Login Button is Pressed
             $('#LoginButton').on('click', function (e) {
+                //Get Username and Password input feilds
                 var forms = document.querySelectorAll('.needs-validation');
                 
+                //Check if both fields have info in them. If not, don't accept the submission
                 var valid = true;
                 for (let i = 0; i < forms.length; i++) {
                     if (!forms[i].checkValidity()) {
@@ -53,25 +90,32 @@
                         valid = false;
                     }
                 }
-    
-                if(valid){    
-                    console.log("Valid Submission");
 
-                    //Code to check valid username and passwor combination
-
-                    sessionStorage.setItem("username", document.getElementById("Username").value);
-                    sessionStorage.setItem("password", document.getElementById("Password").value);
-
-
-                    window.location.href="contacts.html";
-                    
-                }
-                else{
+                if(!valid){    
                     console.log("Not Valid Submission");
+                    return;                    
                 }
+
+                console.log("Valid Submission");
+
+                //Code to check valid username and password combination
+                var matchingInfo = true;  //CHANGE FALSE
+
+                if(!matchingInfo){
+                    document.getElementById('error-message').style.display = 'block';
+                    return;
+                }
+
+
+                //If username and Password match, record username and password. Then move to Contacts Page
+                sessionStorage.setItem("username", document.getElementById("Username").value);
+                sessionStorage.setItem("password", document.getElementById("Password").value);
+
+                window.location.href="contacts.html";
             })
         </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-</body>
+        <!-- Load Bootstrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
 </html>
