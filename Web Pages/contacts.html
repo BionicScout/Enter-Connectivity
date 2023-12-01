@@ -95,8 +95,8 @@
                     </div>
                 </div>
                 </div>
-            </div>
-        </li>
+            </div> <!-- -->
+        </li>  
 
     </template>
 
@@ -108,12 +108,10 @@
         const userNumberElementTemplate = document.querySelector('template');
 
         function createNewElementCloneNode(contactInfo) {
-
-            //Create Template
             let template = document.getElementsByTagName("template")[0];
             let contact = template.content.cloneNode(true);
 
-            //Update Template Info
+            // Update Template Info
             contact.getElementById("Name").innerHTML = contactInfo[0];
 
             var today = new Date();
@@ -123,28 +121,23 @@
             var newButtonID = "refreshDateButton-" + contactInfo[0];
             contact.getElementById("refreshDateButton").id = newButtonID;
 
-            //Update Last Contact Date Panel
+            // Update Last Contact Date Panel
             contact.getElementById("ContactDatePanelName").innerHTML = contactInfo[0];
 
             var newPanelID = "ContactDatePanel-" + contactInfo[0];
             contact.getElementById("ContactDatePanel").id = newPanelID;
-            //$("#" + newButtonID).attr('data-bs-target', "#" + newPanelID);
-            //.data('.data-bs-target', newPanelID);
-            //contact.getElementById(newPanelID).data('.data-bs-target', newPanelID);
-            //contact.getElementById(newPanelID).data_bs_target = "#" + newPanelID;
-
 
             let parent = document.getElementById("ContactList");
             parent.appendChild(contact);
 
-            contact.getElementById(newPanelID).setAttribute("data-bs-target", "#" + newPanelID);
-            console.log("#" + newButtonID);
-            console.log(contact.getElementById(newPanelID).data_bs_target);
-
-
-
-
+            /*let updatedPanel = contact.getElementById(newPanelID);
+            if (updatedPanel) {
+                updatedPanel.setAttribute("data-bs-target", "#" + newPanelID);
+                console.log("#" + newButtonID);
+                console.log(updatedPanel.getAttribute("data-bs-target"));
+            }*/
         }
+
 
         window.onload = function() {
             console.log(sessionStorage.getItem('username'));
