@@ -27,6 +27,7 @@
 
     <h1>Contacts</h1>
 
+    <!-- Main Layout -->
     <div class="container">
         <!-- Add Button -->
         <div class="d-flex justify-content-end mx-5">
@@ -35,25 +36,21 @@
 
         <!-- List of Contacts -->
         <ul class="list-group mx-5" id="ContactList">
-
+            <!-- Example Contact -->
             <li class="list-group-item mx-5">
-
+                <!-- Name and Last Contact Date -->
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-0">Name</h5>
                     <p class="fs-6 pb-0 mb-0">Last Contacted</p>
                 </div>
+
+                <!-- Edit Button -->
                 <div class="d-flex justify-content-between pr-0 mr-0">
                     <p class="p-0 m-0"></p>
-                    <div class="d-flex align-items-center">
-                        <a class="btn py-1 px-0 m-0" role="button" href="Edit.html">
-                            <img src="/Assests/Edit.png" alt="" width="19" height="18" >
-                        </a>
-                        <a class="btn px-0 m-0" role="button" data-bs-toggle="modal" data-bs-target="#ContactDatePanel" aria-expanded="false" aria-controls="updateDate">
-                            <img src="/Assests/Update.png" alt="" width="17" height="17" >
-                        </a>
-                    </div>
+                    <a class="btn py-1 px-0 m-0" role="button" href="#">
+                        <img src="/Assests/Edit.png" alt="" width="19" height="18" >
+                    </a>
                 </div>  
-
             </li>
         </ul>
     </div>
@@ -61,95 +58,58 @@
     <!-- Template for Contact List -->
     <template>
         <li class="list-group-item mx-5">
+            <!-- Name and Last Contact Date -->
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-0" id="Name">Name</h5>
                 <p class="fs-6 pb-0 mb-0" id="LastContactDate">Last Contacted</p>
             </div>
             
+            <!-- Edit Button -->
             <div class="d-flex justify-content-between pr-0 mr-0">
                 <p class="p-0 m-0"></p>
-                <div class="d-flex align-items-center">
-                    <a class="btn py-1 px-0 m-0" role="button" href="Edit.html">
-                        <img src="/Assests/Edit.png" alt="" width="19" height="18" >
-                    </a>
-                    <a class="btn px-0 m-0" id="refreshDateButton" role="button" data-bs-toggle="modal" data-bs-target="#ContactDatePanel" aria-expanded="false" aria-controls="updateDate">
-                        <img src="/Assests/Update.png" alt="" width="17" height="17" >
-                    </a>
-                </div>
-            </div>    
-            
-            <!-- Last Date Contacted Panel -->
-            <div class="modal" id="ContactDatePanel" tabindex="-1" aria-labelledby="ContactDatePanelLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="ContactDatePanelName">Person's Name</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                    Date Input
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Update</button>
-                    </div>
-                </div>
-                </div>
-            </div> <!-- -->
+                <a class="btn py-1 px-0 m-0" role="button" href="Edit.html">
+                    <img src="/Assests/Edit.png" alt="" width="19" height="18" >
+                </a>
+            </div>            
         </li>  
-
     </template>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
     <!-- Create Dynimaic List of Contacts -->
     <script>
-        const userNumberElements = document.querySelector('#ContactList');
-        const userNumberElementTemplate = document.querySelector('template');
-
         function createNewElementCloneNode(contactInfo) {
+            //Create Template
             let template = document.getElementsByTagName("template")[0];
             let contact = template.content.cloneNode(true);
-
-            // Update Template Info
+            
+            //Update Template Name
             contact.getElementById("Name").innerHTML = contactInfo[0];
 
+            //Update Template Last Contact Date
             var today = new Date();
             let timeSincecontact = (today.getTime() - contactInfo[4].getTime()) / (1000 * 60 * 60 * 24);
-            contact.getElementById("LastContactDate").innerHTML = Math.floor(timeSincecontact) + " Days";
+            contact.getElementById("LastContactDate").innerHTML = Math.floor(timeSincecontact) + " Days Ago";
 
-            var newButtonID = "refreshDateButton-" + contactInfo[0];
-            contact.getElementById("refreshDateButton").id = newButtonID;
-
-            // Update Last Contact Date Panel
-            contact.getElementById("ContactDatePanelName").innerHTML = contactInfo[0];
-
-            var newPanelID = "ContactDatePanel-" + contactInfo[0];
-            contact.getElementById("ContactDatePanel").id = newPanelID;
-
+            //Add to List
             let parent = document.getElementById("ContactList");
             parent.appendChild(contact);
-
-            /*let updatedPanel = contact.getElementById(newPanelID);
-            if (updatedPanel) {
-                updatedPanel.setAttribute("data-bs-target", "#" + newPanelID);
-                console.log("#" + newButtonID);
-                console.log(updatedPanel.getAttribute("data-bs-target"));
-            }*/
         }
-
 
         window.onload = function() {
             console.log(sessionStorage.getItem('username'));
             console.log(sessionStorage.getItem('password'));
 
             //Get Contact List
+            /*
             const contactList = [
                 ["Roman Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 1, 0, 0, 0, 0), 30],
                 ["Milan Jostes", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 27, 0, 0, 0, 0), 30],
                 ["Hunter Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 8, 1, 0, 0, 0, 0), 30],
                 ["Aspen Lukas", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2022, 8, 13, 0, 0, 0, 0), 30]
-            ]
+            ] /* */
+
+            
 
             //Add each Contact to page
             contactList.forEach(element => {
@@ -157,6 +117,8 @@
             });
         }
     </script>
+
+
 
 </body>
 </html>
