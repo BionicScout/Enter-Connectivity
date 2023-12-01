@@ -7,11 +7,20 @@ export async function readContacts(username, password){
     input: fileStream,
     crlfDelay: Infinity
   });
-  const data = [];
-  for await (const line of rl) {
-    // Each line in input.txt will be successively available here as `line`.
+  var data = [];
+  let it = 0;
+   for await (const line of rl) {
+    if(it==0){
+        if(password == line){
+            console.log("Password Accepted");
+            it++;
+            continue;
+        }else{
+            console.log("Incorrect Password");
+            break;
+        }
+    }
     data.push(line)
-    console.log(data);
   }
   return data;
 }
