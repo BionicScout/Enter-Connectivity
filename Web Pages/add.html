@@ -1,0 +1,175 @@
+<html lang="en">
+    <!-- Function that adds jquery to file -->
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous">
+    </script>
+
+    <!-- Function that adds the header to this file -->
+    <script> 
+        $(function(){
+          $("#header").load("header.html");  
+        });
+    </script> 
+
+<head>
+    <title>add</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<body>
+    <!-- Add Header  -->
+    <div id="header"></div>
+
+    <h1>Add Page</h1>
+
+    <!-- Input Fields -->
+    <div class="container">
+        <form class="row g-3 needs-validation" novalidate>
+            <!-- Name Input -->
+            <div class="col-md-6">
+              <label for="validationName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="validationName" placeholder="ex. John Doe" required>
+            </div>
+              
+            <!-- Birtday -->
+            <div class="col-md-3">
+              <label for="validationBirthday" class="form-label">Birthday</label>
+              <div class="input-group has-validation">
+                <input type="date" class="form-control" id="validationBirthday" aria-describedby="inputGroupPrepend" required>
+              </div>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="col-md-3">
+                <label for="validationPhoneNumber" class="form-label">Phone Number</label>
+                <div class="input-group has-validation">
+                  <input type="tel" class="form-control" id="validationPhoneNumber" pattern="\d{3}[\-]\d{3}[\-]\d{4}" aria-describedby="inputGroupPrepend" placeholder="###-###-####" required>
+                </div>
+              </div>
+
+            <!-- Email -->
+            <div class="col-md-12">
+              <label for="validationEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="validationEmail" placeholder="ex. john@gmail.com" required>
+              <div class="invalid-feedback">
+                Please provide a valid email address
+              </div>
+            </div>
+
+            <!-- Last Contact Date -->
+            <div class="col-md-2">
+                <label for="validationLastContact" class="form-label">Last Contacted</label>
+                <div class="input-group has-validation">
+                    <input type="date" class="form-control" id="validationLastContact" aria-describedby="inputGroupPrepend" required>
+                </div>
+            </div>
+
+             <!--  Contact Frequency -->
+            <div class="col-md-4">
+              <label for="validationFrequency" class="form-label">How often do you want to contact? (In Days)</label>
+              <input type="number" class="form-control" min="1" max="365" id="validationFrequency" value="30" required>
+              <div class="invalid-feedback">
+                Please provide a number between 1 and 365
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-12">
+              <button class="btn btn-primary" type="button" id="SubmitButton">Submit form</button>
+            </div>
+          </form>
+
+    </div>
+
+    <script>
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            var valid = true;
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        valid = false;
+                    }
+
+                    form.classList.add('was-validated')
+
+
+
+                    if(valid){            
+                      var info = "[";
+                      info += document.getElementById('validationName').value + ", "
+                      info += document.getElementById('validationBirthday').value + ", "
+                      info += document.getElementById('validationPhoneNumber').value + ", "
+                      info += document.getElementById('validationEmail').value + ", "
+                      info += document.getElementById('validationLastContact').value + ", "
+                      info += document.getElementById('validationFrequency').value + "]"
+
+                      console.log(info);
+
+                      window.location="contacts.html";
+                    }
+                    else{
+                      console.log("Not Valid Submission");
+                    }
+                }, false)
+            })
+        })()
+    </script>
+
+    <script>
+        $('#SubmitButton').on('click', function (e) {
+            var forms = /*[document.getElementById('validationName'), 
+                         document.getElementById('validationBirthday'),
+                         document.getElementById('validationPhoneNumber'),
+                         document.getElementById('validationEmail'),
+                         document.getElementById('validationLastContact'),
+                         document.getElementById('validationFrequency')];*/
+                         document.querySelectorAll('.needs-validation');
+            
+            var valid = true;
+            for (let i = 0; i < forms.length; i++) {
+                if (!forms[i].checkValidity()) {
+                    //forms[i].reportValidity();
+                    forms[i].classList.add('was-validated')
+                    valid = false;
+                }
+            }
+
+            if(valid){
+
+            
+                var info = "[";
+                info += document.getElementById('validationName').value + ", "
+                info += document.getElementById('validationBirthday').value + ", "
+                info += document.getElementById('validationPhoneNumber').value + ", "
+                info += document.getElementById('validationEmail').value + ", "
+                info += document.getElementById('validationLastContact').value + ", "
+                info += document.getElementById('validationFrequency').value + "]"
+
+                console.log(info);
+
+
+                window.location.href="contacts.html";
+            }
+            else{
+                console.log("Not Valid Submission");
+            }
+        })
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
