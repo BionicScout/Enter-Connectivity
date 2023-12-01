@@ -66,7 +66,7 @@
 
                     <!-- Login Button -->
                     <div>
-                        <input class="btn btn-primary" type="button" value="Log In" id="LoginButton">
+                        <input class="btn btn-primary" type="button" value="Sign Up" id="SignUpButton">
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
 
         <script>
             //When the Login Button is Pressed
-            $('#LoginButton').on('click', function (e) {
+            $('#SignUpButton').on('click', function (e) {
                 //Get Username and Password input feilds
                 var forms = document.querySelectorAll('.needs-validation');
                 
@@ -122,21 +122,13 @@
 
                 console.log("Valid Submission");
 
-                //Code to check valid username and password combination
-                var matchingInfo = false;  //CHANGE FALSE
-
-                if(!matchingInfo){
-                    document.getElementById('error-message').style.display = 'block';
-                    return;
-                }
-
                 //Save Username and Password
 
 
 
                 //Save Username and Password to the site. Then move to Contacts Page
                 sessionStorage.setItem("username", document.getElementById("Username").value);
-                sessionStorage.setItem("password", document.getElementById("Password").value);
+                sessionStorage.setItem("password", document.getElementById("Password1").value);
 
                 window.location.href="contacts.html";
             })
