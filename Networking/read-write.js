@@ -32,6 +32,8 @@ export async function readContacts(username, password){
     }
     data.push(line)
   }
+
+  console.log("DATA: " + data);
   return data;
 }
 
@@ -61,4 +63,11 @@ export async function writeContacts(username, password,data){
 
     await fs.promises.appendFile(filename, data)
     console.log('file was appended');
+}
+
+export function doesFileExist(filename){
+    if(fs.existsSync(filename)){
+        return true;
+    }
+    return false;
 }

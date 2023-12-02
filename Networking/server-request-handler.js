@@ -3,7 +3,7 @@ import path from 'path';
 import fs from "fs";
 
 import {contactCreate,separateContacts,textContact, outputContacts, dateToText, textToDate} from "./contact.js";
-import {readContacts, writeContacts} from "./read-write.js";
+import {doesFileExist, readContacts, writeContacts} from "./read-write.js";
 
 //Utility Fuctions and Variables
 const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -80,6 +80,52 @@ export function writeContact(req, res){
         const responseData = { message: 'Server Respone - Contact Created!' };
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(responseData));
+
+        console.log("\n");
+    });        
+}
+
+export function checkPassword(req, res){
+    //Get Data
+    let incomingData = "";
+
+    req.on('data', chunk => {
+        incomingData += chunk.toString();
+    });
+
+    //Once Data is collected, use it
+    req.on('end', async () => {
+        //Turn Data to JSON
+        console.log("Incoming Data:\n" + incomingData + "\n" + typeof(incomingData));
+        const receivedData = JSON.parse(incomingData);
+        console.log("Username: " + receivedData.username);
+        console.log("Password: " + receivedData.password);
+        
+        //Check if User Name is there
+        if(doesFileExist("./Contacts/"+ receivedData.username +".txt")){
+        //Check Password Match
+
+            var data = await readContacts(receivedData.username, receivedData.password);
+            console.log(data);
+            console.log(data[0]);
+
+            var passwordMatch;
+            if(data[0] == false)
+                passwordMatch = false;
+            else
+                passwordMatch = true;
+
+
+            //Respond to the client
+            const responseData = { message: 'Server Respone - Password match (' + passwordMatch + ')', match: passwordMatch };
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(responseData));
+        }
+        else{
+            const responseData = { message: 'Server Respone - Username does not exist', match: passwordMatch };
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(responseData));
+        }
 
         console.log("\n");
     });        

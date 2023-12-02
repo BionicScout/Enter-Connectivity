@@ -78,7 +78,7 @@
 
         <script>
             //When the Login Button is Pressed
-            $('#LoginButton').on('click', function (e) {
+            $('#LoginButton').on('click', async function (e) {
                 //Get Username and Password input feilds
                 var forms = document.querySelectorAll('.needs-validation');
                 
@@ -99,12 +99,38 @@
                 console.log("Valid Submission");
 
                 //Code to check valid username and password combination
-                var matchingInfo = true;  //CHANGE FALSE
 
+                let dataToSend = {
+                    username: document.getElementById("Username").value,
+                    password: document.getElementById("Password").value
+                }
+
+                let options = {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(dataToSend)
+                }
+                console.log(JSON.stringify(dataToSend));
+                console.log("Server Request");
+
+                var matchingInfo;
+                await fetch('/Networking/checkPassword', options)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        matchingInfo = data.match;
+                        wait = false;
+                    })
+                    .catch(error => console.error('Fetch error:', error));
+
+                console.log(matchingInfo);
                 if(!matchingInfo){
+                    console.log("Did not match");
                     document.getElementById('error-message').style.display = 'block';
                     return;
                 }
+
+                console.log("Matched");
 
 
                 //If username and Password match, record username and password. Then move to Contacts Page
