@@ -1,27 +1,84 @@
-const http = require('http');
+import http from "http";
+import fs from "fs";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cors from 'cors';
+
+const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
 const server = http.createServer((req, res) => {
+    cors();
+
     console.log("Request Made");
     console.log(req.url, req.method);
+    
 
-    //Try localhost:3000/about
+
+    if(req.url == "/Networking/writeContact"){
+        const responseData = { message: 'This is the response from the server' };
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(responseData));
+    }
+    else{
+
+        const filePath = path.join(__dirname, "Web_Pages", req.url);
+        console.log(filePath);
+
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.end('File not found - ' + err.message);
+            } else {
+                // Determine the content type based on file extension
+                const contentType = getContentType(filePath);
+                res.writeHead(200, { 'Content-Type': contentType });
+                res.end(data);
+            }
+        });
+    }
+
+
+    console.log("\n");
+    
+
+   /* //Try localhost:3000/about
 
     //Set Header type to plain
     //res.setHeader('Content-Type', 'text/plain');
     //res.write('hello, ninjas');
 
     //Set Header type to html
-    res.setHeader('Content-Type', 'text/html');
-    res.write('<head><link rel="stylesheet" href="#"></head>');
-    res.write('<p>hello, ninjas</p>');
-    res.write('<p>goodbye, ninjas</p>');
+    res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+    var myReadStream = fs.createReadStream('../Assests/Index-Campfire.jpeg', 'utf8');
 
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    myReadStream = fs.createReadStream('../Web Pages/index.html', 'utf8');
 
-    res.end();
+    myReadStream.pipe(res);*/
 });
 
+function getContentType(filePath) {
+    const extname = path.extname(filePath);
+    switch (extname) {
+        case '.html':
+            return 'text/html';
+        case '.css':
+            return 'text/css';
+        case '.js':
+            return 'text/javascript';
+        case '.jpeg':
+        case '.jpg':
+            return 'image/jpeg';
+        case '.png':
+            return 'image/png';
+        default:
+            return 'application/octet-stream';
+    }
+}
+
+
 //(port number, host name, ...)
-port = 4870;
+let port = 4870;
 server.listen(port, 'localhost', () => {
-    console.log("Listening for request on port "+port);
+    console.log("Listening for request on port " + port);
 });
