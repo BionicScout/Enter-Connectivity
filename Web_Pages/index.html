@@ -1,0 +1,90 @@
+<html lang="en">
+    <!-- Function that adds jquery to file -->
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous">
+    </script>
+
+    <!-- Function that adds the header to this file -->
+    <script> 
+        $(function(){
+          $("#header").load("header.html");  
+        });
+    </script> 
+
+    <style>
+        .titleText{
+            position: absolute;
+            top: 125px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .signUpText{
+            position: absolute;
+            top: 800px;
+            right: 20px;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+
+<head>
+    <title>index</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<body>
+    <!-- Add Header  -->
+    <div id="header"></div>
+
+    <!-- Top Image-->
+    <div>
+        <h1 class="titleText text-white">ENTER-CONNECTIVITY</h1>
+        <img src="Assests/Index-Campfire.jpeg" alt="" class="img-fluid">
+        <a href="sign-up.html" class="signUpText text-white">Sign Up Today!</a>
+    </div>
+
+    <!-- Description -->
+    <div class="container w-50 my-4">
+        <h2 class="text-center">What do we do?</h2>
+        <h6>
+            Enter-Connectivity is an application dedicated to keep people in touch. We do this by keep track of you contact information for each person and track the last time you talk to that person. We then create list of people you should contact based on the last time you contact them. You are also able to set an interval for how often you want to contact a person. This allows us to tell you if it has been over a month since you last contacted that old friend of yours or we can remind you every week to talk to your mother. Enter-Connectivity the ensures you maintain your relationships.
+        </h6>
+    </div>
+
+    <hr class="hr hr-blurry" />
+
+    <!-- Steps to use Program -->
+    <div class="container w-50 mb-4">
+        <h2 class="text-center">Steps to Use</h2>
+        <div class="my-2">
+            <h5>Step 1 - Create an Account</h5>
+            <h6>Sign up for an account. All you have to do is create unqiue username and password.</h6>
+        </div>
+        <div class="my-2">
+            <h5>Step 2 - Add Contacts</h5>
+            <h6>Go to the Contact Page and click on the add button. Here you can create a list of contacts you want to talk to more often. Simply record their contact information and how often you want to talk to them.</h6>
+        </div>
+        <div class="my-2">
+            <h5>Step 3 - Get List to Contact</h5>
+            <h6>Go to the Get Contacts Page. Here, you can click a button to get a list of people you should contact.</h6>
+        </div>
+        <div class="my-2">
+            <h5>Step 4 - Connect with your Friends and Family</h5>
+            <h6>Now you can stay up to date with your friends and family. Make sure you come back here to update when you last contacted them.</h6>
+        </div>
+    </div>
+
+    <hr class="hr hr-blurry" />
+
+    <!-- Credit -->
+    <div>
+        Application made by Roman Higginson and Milan Jostes.
+    </div>
+    <div>
+        Images are creative commons.
+    </div>
+</html>

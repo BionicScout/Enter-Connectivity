@@ -1,27 +1,35 @@
-const http = require('http');
+import http from "http";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cors from 'cors';
+
+import {htmlPageRequest, writeContact} from "./server-request-handler.js";
+
+const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
 const server = http.createServer((req, res) => {
+    cors();
+
     console.log("Request Made");
     console.log(req.url, req.method);
+    
 
-    //Try localhost:3000/about
-
-    //Set Header type to plain
-    //res.setHeader('Content-Type', 'text/plain');
-    //res.write('hello, ninjas');
-
-    //Set Header type to html
-    res.setHeader('Content-Type', 'text/html');
-    res.write('<head><link rel="stylesheet" href="#"></head>');
-    res.write('<p>hello, ninjas</p>');
-    res.write('<p>goodbye, ninjas</p>');
+    //Select Correct Request
+    if(req.url == "/Networking/writeContact"){
+        writeContact(req, res);
+    }
+    else{
+        htmlPageRequest(req, res);
+    }
 
 
-    res.end();
+    console.log("\n");
 });
 
+
+
 //(port number, host name, ...)
-port = 4870;
+let port = 4870;
 server.listen(port, 'localhost', () => {
-    console.log("Listening for request on port "+port);
+    console.log("Listening for request on port " + port);
 });
