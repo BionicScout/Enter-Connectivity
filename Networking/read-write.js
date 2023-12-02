@@ -2,7 +2,6 @@ import error from "console";
 import fs from "fs";
 import readline from "readline"
 
-const fs = require('fs');
 
 export async function readContacts(username, password){
   const fileStream = fs.createReadStream("./Contacts/"+username+".txt");
@@ -29,7 +28,7 @@ export async function readContacts(username, password){
 }
 
 
-export function writeContacts(username, password,data){
+export async function writeContacts(username, password,data){
     console.log("In contact");
 
   if(fs.existsSync("./Contacts/"+username+".txt")){
@@ -40,11 +39,10 @@ export function writeContacts(username, password,data){
         console.log('file deleted');
     })
 }
-
-    fs.writeFile("./Contacts/"+username+".txt",password, () => {
+    await fs.writeFile("./Contacts/"+username+".txt",password, () => {
         console.log('file was created');
     })
-    fs.appendFile("./Contacts/"+username+".txt",data, () => {
-        console.log('file was created');
+    await fs.appendFile("./Contacts/"+username+".txt",data, () => {
+        console.log('file was appended');
     })
 }

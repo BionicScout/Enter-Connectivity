@@ -28,6 +28,7 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             //Turn Data to JSON
             console.log("Received Data:")
+            console.log(incomingData)
             const receivedData = JSON.parse(incomingData);
             console.log(receivedData);
             
