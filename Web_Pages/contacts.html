@@ -100,64 +100,66 @@
                 parent.appendChild(contact);
             }
 
-            window.onload = function() {
-                //Get Username and Password
-                //console.log(sessionStorage.getItem('username'));
-                //console.log(sessionStorage.getItem('password'));
+            //Get Username and Password
+            console.log(sessionStorage.getItem('username'));
+            console.log(sessionStorage.getItem('password'));
 
-                //let username = sessionStorage.getItem('username');
-                //let password = sessionStorage.getItem('password');
+            let username = sessionStorage.getItem('username');
+            let password = sessionStorage.getItem('password');
 
-                //Get Contact List
-                /* *
-                const contactList = [
-                    ["Roman Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 1, 0, 0, 0, 0), 30],
-                    ["Milan Jostes", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 27, 0, 0, 0, 0), 30],
-                    ["Hunter Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 8, 1, 0, 0, 0, 0), 30],
-                    ["Aspen Lukas", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2022, 8, 13, 0, 0, 0, 0), 30]
-                ] /* */
+            //Get Contact List
+            /* *
+            const contactList = [
+                ["Roman Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 1, 0, 0, 0, 0), 30],
+                ["Milan Jostes", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 27, 0, 0, 0, 0), 30],
+                ["Hunter Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 8, 1, 0, 0, 0, 0), 30],
+                ["Aspen Lukas", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2022, 8, 13, 0, 0, 0, 0), 30]
+            ] /* */
 
-
-
-                console.log("Before fetch");
-
-                fetch('/Networking/writeContact')
-                    .then(response => response.json())
-                    .then(data => console.log(data))
-                    .catch(error => console.error('Fetch error:', error));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                //let steve = contactCreate("Steve", new Date(),"ramen@gmail.com","123-456-7890", new Date(),30);
-                //let dataTXT = textContact(steve);
-                
-
-                //var data = readContacts("john", password);
-                //const contactList = separateContacts(data);    
-                
-                //console.log(data);
-                //console.log(contactList);
-
-                //Add each Contact to page
-                contactList.forEach(contact => {
-                    createNewElementCloneNode(contact);
-                });
+            let dataToSend = {
+                username: "username",
+                password: "password",
+                name: "name",
+                bday: new Date(),
+                email: "ramen@gmail.com",
+                phone: "123-456-7890",
+                last_contact: new Date(),
+                contact_interval: 30
             }
+
+            console.log("Before fetch");
+
+            let options = {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(dataToSend)
+            }
+
+            fetch('/Networking/writeContact', options)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Fetch error:', error));
+
+
+
+
+
+
+            //let steve = contactCreate("Steve", new Date(),"ramen@gmail.com","123-456-7890", new Date(),30);
+            //let dataTXT = textContact(steve);
+            
+
+            //var data = readContacts("john", password);
+            //const contactList = separateContacts(data);    
+            
+            //console.log(data);
+            //console.log(contactList);
+
+            //Add each Contact to page
+           /* contactList.forEach(contact => {
+                createNewElementCloneNode(contact);
+            });*/
+
         </script>
 
 

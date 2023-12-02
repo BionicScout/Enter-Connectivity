@@ -4,6 +4,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 
+import {contactCreate,separateContacts,textContact, outputContacts, dateToText, textToDate} from "./contact.js";
+import {readContacts, writeContacts} from "./read-write.js";
+
 const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
 const server = http.createServer((req, res) => {
@@ -13,11 +16,51 @@ const server = http.createServer((req, res) => {
     console.log(req.url, req.method);
     
 
-
+    //Select Correct Request
     if(req.url == "/Networking/writeContact"){
-        const responseData = { message: 'This is the response from the server' };
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(responseData));
+    //Get Data
+        let incomingData = "";
+
+        req.on('data', chunk => {
+            incomingData += chunk.toString();
+        });
+
+        req.on('end', () => {
+            //Turn Data to JSON
+            console.log("Received Data:")
+            const receivedData = JSON.parse(incomingData);
+            console.log(receivedData);
+            
+            //Create Contact
+            let contact= contactCreate(
+                receivedData.name, 
+                /*receivedData.bday*/ new Date(),
+                receivedData.email,
+                receivedData.phone,
+                /*receivedData.last_contact*/ new Date(),
+                receivedData.contact_interval
+            );
+
+                //Dates need converted from HTML to Date
+                
+            console.log("Contact",contact);
+            let dataTXT = textContact(contact);
+            //dataTXT+=textContact(john2);
+            console.log("DataTXT", dataTXT)
+            writeContacts(receivedData.username, receivedData.password, dataTXT);
+
+
+
+        
+            
+            // Respond to the client
+            const responseData = { message: 'This is the response from the server' };
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(responseData));
+
+            console.log("\n");
+
+        });
     }
     else{
 
