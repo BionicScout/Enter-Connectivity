@@ -19,6 +19,7 @@ export async function readContacts(username, password){
             continue;
         }else{
             console.log("Incorrect Password");
+            data.push(false)
             break;
         }
     }
