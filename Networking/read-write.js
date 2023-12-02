@@ -40,7 +40,7 @@ export async function readContacts(username, password){
  * @param {string} password
  * @param {array} data
  */
-export function writeContacts(username, password, data){
+export async function writeContacts(username, password, data){
   if(fs.existsSync("./Contacts/"+username+".txt")){
     fs.unlink("./Contacts/"+username+".txt", (err) => {
         if(err){
@@ -50,10 +50,10 @@ export function writeContacts(username, password, data){
     })
 }
 
-    fs.writeFile("./Contacts/"+username+".txt",password, () => {
+    await fs.writeFile("./Contacts/"+username+".txt",password, () => {
         console.log('file was created');
     })
-    fs.appendFile("./Contacts/"+username+".txt",data, () => {
-        console.log('file was created');
+    await fs.appendFile("./Contacts/"+username+".txt",data, () => {
+        console.log('file was appended');
     })
 }
