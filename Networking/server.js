@@ -50,8 +50,6 @@ const server = http.createServer((req, res) => {
             console.log("DataTXT", dataTXT)
             writeContacts(receivedData.username, receivedData.password, dataTXT);
 
-
-
         
             
             // Respond to the client

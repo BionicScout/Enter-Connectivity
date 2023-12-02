@@ -31,18 +31,21 @@ export async function readContacts(username, password){
 export async function writeContacts(username, password,data){
     console.log("In contact");
 
-  if(fs.existsSync("./Contacts/"+username+".txt")){
-    fs.unlink("./Contacts/"+username+".txt", (err) => {
-        if(err){
-            console.log(err);
-        }
-        console.log('file deleted');
-    })
-}
-    await fs.writeFile("./Contacts/"+username+".txt",password, () => {
-        console.log('file was created');
-    })
-    await fs.appendFile("./Contacts/"+username+".txt",data, () => {
-        console.log('file was appended');
-    })
+    let filename = "./Contacts/" + username + ".txt";
+
+    if(fs.existsSync(filename)){
+        await fs.promises.unlink(filename, (err) => {
+            if(err){
+                console.log(err);
+            }
+            console.log('file deleted');
+        })
+    }
+
+    console.log(typeof(password));
+    await fs.promises.writeFile(filename, password);
+    console.log('file was created');
+
+    await fs.promises.appendFile(filename, data)
+    console.log('file was appended');
 }
