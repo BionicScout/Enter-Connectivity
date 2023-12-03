@@ -40,7 +40,12 @@ export function textToDate(dateText){
  * @returns {string}
  */
 export function textContact(contact){
-const text = "\n"+contact.name.toString()+"\n"+(contact.birthday.toString())+"\n"+contact.email.toString()+"\n"+contact.phone.toString()+"\n"+(contact.lastContacted.toString())+"\n"+contact.contactFequency.toString();
+  const text = "\n" + contact.name.toString() + "\n" + 
+    (contact.birthday.toString()) + "\n" +
+    contact.email.toString() + "\n" +
+    contact.phone.toString() + "\n" +
+    (contact.lastContacted.toString()) + "\n" + 
+    contact.contactFequency.toString();
 return text;
 }
 

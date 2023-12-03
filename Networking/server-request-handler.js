@@ -2,8 +2,8 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from "fs";
 
-import {contactCreate,separateContacts,textContact, outputContacts, dateToText, textToDate} from "./contact.js";
-import {doesFileExist, readContacts, writeContacts} from "./read-write.js";
+import {contactCreate, separateContacts, textContact, outputContacts, dateToText, textToDate} from "./contact.js";
+import {addContact, doesFileExist, readContacts, writeContacts} from "./read-write.js";
 
 //Utility Fuctions and Variables
 const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -64,17 +64,17 @@ export function writeContact(req, res){
         console.log(receivedData);
         
         //Create Contact
-        let contact= contactCreate(
+        let contact = contactCreate(
             receivedData.name, 
-            /*receivedData.bday*/ new Date(),
+            new Date(receivedData.bday),
             receivedData.email,
             receivedData.phone,
-            /*receivedData.last_contact*/ new Date(),
+            new Date(receivedData.last_contact),
             receivedData.contact_interval
         );
             
         let dataTXT = textContact(contact);
-        writeContacts(receivedData.username, receivedData.password, dataTXT);
+        addContact(receivedData.username, receivedData.password, dataTXT);
 
         //Respond to the client
         const responseData = { message: 'Server Respone - Contact Created!' };

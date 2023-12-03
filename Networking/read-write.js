@@ -1,6 +1,8 @@
 import error from "console";
 import fs from "fs";
-import readline from "readline"
+import readline from "readline";
+
+import {separateContacts, textContact} from "./contact.js";
 
 /**
  * readContacts reads all the information in the text file that uses username as a name.
@@ -63,6 +65,25 @@ export async function writeContacts(username, password,data){
 
     await fs.promises.appendFile(filename, data)
     console.log('file was appended');
+}
+
+export async function addContact(username, password, newContact){
+    console.log("\nAdd Contact");
+    //Get Old Contacts
+    let data = await readContacts(username, password);
+    let contactList = separateContacts(data);
+
+    //Turn Old contacts into string
+    let newList = "";
+    for(let i = 0; i < contactList.length; i++){
+        newList += textContact(contactList[i]);
+    }
+
+    console.log("Contact List: " + contactList);
+
+    //Add New contact and Save data
+    newList += newContact;
+    await writeContacts(username, password, newList);
 }
 
 export function doesFileExist(filename){

@@ -1,0 +1,7 @@
+password1
+name
+2023-12-3
+ramen@gmail.com
+123-456-7890
+2023-12-3
+30
