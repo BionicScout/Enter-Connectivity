@@ -13,6 +13,8 @@
         });
     </script> 
 
+    <script src="client-request.js"></script>
+
     <head>
         <title>Enter-Connectivity</title>
 
@@ -99,30 +101,7 @@
                 console.log("Valid Submission");
 
                 //Code to check valid username and password combination
-
-                let dataToSend = {
-                    username: document.getElementById("Username").value,
-                    password: document.getElementById("Password").value
-                }
-
-                let options = {
-                    method: "POST",
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(dataToSend)
-                }
-                console.log(JSON.stringify(dataToSend));
-                console.log("Server Request");
-
-                var matchingInfo;
-                await fetch('/Networking/checkPassword', options)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data.message);
-                        matchingInfo = data.match;
-                        wait = false;
-                    })
-                    .catch(error => console.error('Fetch error:', error));
-
+                let matchingInfo = await requestCheckPassword(document.getElementById("Username").value, document.getElementById("Password").value);
                 
                 if(!matchingInfo){
                     console.log("Did not match");

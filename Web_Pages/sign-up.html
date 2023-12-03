@@ -112,24 +112,7 @@
                 }
 
                 //Check if Username is available. If not, don't accept the submission
-                let dataToSend = { username: document.getElementById("Username").value }
-
-                let options = {
-                    method: "POST",
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(dataToSend)
-                }
-                console.log(JSON.stringify(dataToSend));
-                console.log("Server Request");
-
-                var usernameAvailable;
-                await fetch('/Networking/checkUsername', options)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data.message);
-                        usernameAvailable = data.match;
-                    })
-                    .catch(error => console.error('Fetch error:', error));
+                let usernameAvailable  = await requestCheckUsername(document.getElementById("Username").value);
 
                 if(!usernameAvailable){
                     document.getElementById('passwords-mismatch').style.display = 'none';
@@ -140,34 +123,13 @@
                 console.log("Valid Submission");
 
                 //Save Username and Password
-                let dataToSend2 = { 
-                    username: document.getElementById("Username").value,
-                    password: document.getElementById("Password1").value 
-                }
-
-                let options2 = {
-                    method: "POST",
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(dataToSend)
-                }
-
-                console.log(JSON.stringify(dataToSend2));
-                console.log("Server Request");
-
-                await fetch('/Networking/createProfile', options2)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data.message);
-                        usernameAvailable = data.match;
-                    })
-                    .catch(error => console.error('Fetch error:', error));
-
+                requestCreateProfile(document.getElementById("Username").value, document.getElementById("Password1").value);
 
                 //Save Username and Password to the site. Then move to Contacts Page
                 sessionStorage.setItem("username", document.getElementById("Username").value);
                 sessionStorage.setItem("password", document.getElementById("Password1").value);
 
-                //window.location.href="contacts.html";
+                window.location.href="contacts.html";
             })
         </script>
 
