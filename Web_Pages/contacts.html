@@ -93,48 +93,43 @@
                 let password = sessionStorage.getItem('password');
 
                 //Get Contact List
-                /* *
-                const contactList = [
-                    ["Roman Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 1, 0, 0, 0, 0), 30],
-                    ["Milan Jostes", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 10, 27, 0, 0, 0, 0), 30],
-                    ["Hunter Higginson", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2023, 8, 1, 0, 0, 0, 0), 30],
-                    ["Aspen Lukas", new Date(), "724-759-9516", "roman.higginson@zoominternet.net", new Date(2022, 8, 13, 0, 0, 0, 0), 30]
-                ] /* */
+                let contactList = await requestContacts(username, password);
+                console.log(contactList);
 
-                let dataToSend = {
-                    username: "username1",
-                    password: "password1",
-                    name: "name",
-                    bday: new Date(),
-                    email: "ramen@gmail.com",
-                    phone: "123-456-7890",
-                    last_contact: new Date(),
-                    contact_interval: 30
-                }
-
-                await requestWriteContact(dataToSend);
+                contactList.forEach(element => {
+                    createNewContactTemplate(element);
+                });
             }
 
-            function createNewElementCloneNode(contactInfo) {
+            function createNewContactTemplate(contactInfo) {
                 //Create Template
                 let template = document.getElementsByTagName("template")[0];
                 let contact = template.content.cloneNode(true);
                 
                 //Update Template Name
-                contact.getElementById("Name").innerHTML = contactInfo[0];
+                contact.getElementById("Name").innerHTML = contactInfo.name;
 
                 //Update Template Last Contact Date
                 var today = new Date();
-                let timeSincecontact = (today.getTime() - contactInfo[4].getTime()) / (1000 * 60 * 60 * 24);
+                var lastContact = stringToDate(contactInfo.lastContacted);
+                let timeSincecontact = (today.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24);
                 contact.getElementById("LastContactDate").innerHTML = Math.floor(timeSincecontact) + " Days Ago";
 
                 //Add to List
                 let parent = document.getElementById("ContactList");
                 parent.appendChild(contact);
             }
+
+            function stringToDate(dateAsString){
+                //Get Year, month, and year
+                let year = dateAsString.substring(0, 4);
+                let month = dateAsString.substring(5, 7);
+                let day = dateAsString.substring(8, 10);
+
+                //Convert to date
+                let date = new Date(year, month - 1, day);
+                return date;
+            }
         </script>
-
-
-
     </body>
 </html>

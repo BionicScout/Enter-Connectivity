@@ -190,3 +190,32 @@ export function createProfile(req, res){
         console.log("\n");
     });        
 }
+
+export function getContacts(req, res){
+    //Get Data
+    let incomingData = "";
+
+    req.on('data', chunk => {
+        incomingData += chunk.toString();
+    });
+
+    //Once Data is collected, use it
+    req.on('end', async () => {
+        //Turn Data to JSON
+        console.log("Received Data:")
+        console.log(incomingData)
+        const receivedData = JSON.parse(incomingData);
+        console.log(receivedData);
+        
+        //Create Profile
+        let data = await readContacts(receivedData.username, receivedData.password);
+        let contactList = separateContacts(data);
+
+        //Respond to the client
+        const responseData = { message: 'Server Respone - Got Contacts!', list: contactList};
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(responseData));
+
+        console.log("\n");
+    });        
+}

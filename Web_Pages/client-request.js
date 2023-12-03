@@ -68,6 +68,31 @@ async function requestCreateProfile(username, password){
         .catch(error => console.error('Fetch error:', error));
 }
 
+async function requestContacts(username, password){
+    //Create Options for Request
+    let dataToSend = { 
+        username: username,
+        password: password 
+    }
+
+    let options = getOptions(dataToSend);
+    console.log("Data:\n" + options.body);
+
+    //Send Request to Server
+    console.log("Server Request");
+
+    var contactList;
+    await fetch('/Networking/getContacts', options)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+            contactList = data.list;
+        })
+        .catch(error => console.error('Fetch error:', error));
+
+    return contactList;
+}
+
 async function requestWriteContact(dataToSend){
     let options = getOptions(dataToSend);
     console.log("Data:\n" + options.body);
