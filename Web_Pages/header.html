@@ -1,55 +1,58 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
+    <head>
+        <!-- Set Up File and Import Bootstrap -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
 
-<body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand bg-secondary">
-        <div class="container-fluid mb-1">
-            <!-- Header and Logo -->
-            <a class="navbar-brand" href="index.html">
-                <img src="/Assests/Logo.png" alt="" width="32" height="32" class="d-inline-block align-text-top pr-5">
-                <strong class="fw-bold text-dark">Enter-Connectivity</strong>
-            </a>
-            
-            <!-- Buttons -->
-            <div class="navbar-nav">
-                <a class="btn btn-primary m-1" role="button" href="index.html">Home</a>
-                <a class="btn btn-primary m-1" role="button" href="#" id="WhoToContactButton">Who to Contact</a>
-                <a class="btn btn-primary m-1" role="button" href="contacts.html" id="ManageContactButton">Manage Contacts</a>
-                <a class="btn btn-primary m-1" role="button" href="log-in.html" id="LogInButton">Log In</a>
-                <a class="btn btn-primary m-1" role="button" href="index.html" id="SignOutButton">Sign Out</a>
+    <body>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand bg-secondary">
+            <div class="container-fluid mb-1">
+                <!-- Header and Logo -->
+                <a class="navbar-brand" href="index.html">
+                    <img src="/Assests/Logo.png" alt="" width="32" height="32" class="d-inline-block align-text-top pr-5">
+                    <strong class="fw-bold text-dark">Enter-Connectivity</strong>
+                </a>
+                
+                <!-- Buttons -->
+                <div class="navbar-nav">
+                    <a class="btn btn-primary m-1" role="button" href="index.html">Home</a>
+                    <a class="btn btn-primary m-1" role="button" href="#" id="WhoToContactButton">Who to Contact</a>
+                    <a class="btn btn-primary m-1" role="button" href="contacts.html" id="ManageContactButton">Manage Contacts</a>
+                    <a class="btn btn-primary m-1" role="button" href="log-in.html" id="LogInButton">Log In</a>
+                    <a class="btn btn-primary m-1" role="button" href="index.html" id="SignOutButton">Sign Out</a>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <script>
-        window.onload = function() {
-            console.log(sessionStorage.getItem('username'));
-            console.log(sessionStorage.getItem('password'));
+        <script>
+            //Enable Buttons Based on Log In or not
+            window.onload = function() {
+                console.log(sessionStorage.getItem('username'));
+                console.log(sessionStorage.getItem('password'));
 
-            if(sessionStorage.getItem('username') == null || sessionStorage.getItem('password') == null){
-                document.getElementById('WhoToContactButton').style.display = 'none';
-                document.getElementById('ManageContactButton').style.display = 'none';
-                document.getElementById('SignOutButton').style.display = 'none';
+                if(sessionStorage.getItem('username') == null || sessionStorage.getItem('password') == null){
+                    document.getElementById('WhoToContactButton').style.display = 'none';
+                    document.getElementById('ManageContactButton').style.display = 'none';
+                    document.getElementById('SignOutButton').style.display = 'none';
+                }
+                else{
+                    document.getElementById('LogInButton').style.display = 'none';
+                }
             }
-            else{
-                document.getElementById('LogInButton').style.display = 'none';
-            }
-        }
 
-        $('#SignOutButton').on('click', function (e) {
-            sessionStorage.removeItem("username");
-            sessionStorage.removeItem("password");
+            //The button that signs the user out
+            $('#SignOutButton').on('click', function (e) {
+                sessionStorage.removeItem("username");
+                sessionStorage.removeItem("password");
 
-            console.log(sessionStorage.getItem('username'));
-            console.log(sessionStorage.getItem('password'));
-        })
-    </script>
+                console.log(sessionStorage.getItem('username'));
+                console.log(sessionStorage.getItem('password'));
+            })
+        </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
 </html>

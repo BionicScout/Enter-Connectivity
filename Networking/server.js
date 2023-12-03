@@ -12,6 +12,7 @@ const server = http.createServer((req, res) => {
 
     console.log("Request Made");
     console.log(req.url, req.method);
+    console.log(req.socket);
     
 
     //Select Correct Request
