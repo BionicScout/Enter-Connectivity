@@ -131,7 +131,62 @@ export function checkPassword(req, res){
     });        
 }
 
-export function getAllContacts(req, res){
+export function checkUsername(req, res){
+    //Get Data
+    let incomingData = "";
+
+    req.on('data', chunk => {
+        incomingData += chunk.toString();
+    });
+
+    //Once Data is collected, use it
+    req.on('end', async () => {
+        //Turn Data to JSON
+        console.log("Incoming Data:\n" + incomingData + "\n" + typeof(incomingData));
+        const receivedData = JSON.parse(incomingData);
+        console.log("Username: " + receivedData.username);
+        
+        //Check if User Name is there
+        if(doesFileExist("./Contacts/"+ receivedData.username +".txt")){
+            const responseData = { message: 'Server Respone - Username is not available', match: false };
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(responseData));
+        }
+        else{
+            const responseData = { message: 'Server Respone - Username is available', match: true };
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(responseData));
+        }
 
 
+        console.log("\n");
+    });        
+}
+
+export function createProfile(req, res){
+    //Get Data
+    let incomingData = "";
+
+    req.on('data', chunk => {
+        incomingData += chunk.toString();
+    });
+
+    //Once Data is collected, use it
+    req.on('end', () => {
+        //Turn Data to JSON
+        console.log("Received Data:")
+        console.log(incomingData)
+        const receivedData = JSON.parse(incomingData);
+        console.log(receivedData);
+        
+        //Create Profile
+        writeContacts(receivedData.username, receivedData.password, "");
+
+        //Respond to the client
+        const responseData = { message: 'Server Respone - Profile Created!' };
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(responseData));
+
+        console.log("\n");
+    });        
 }

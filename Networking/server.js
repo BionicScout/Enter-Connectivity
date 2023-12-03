@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 
-import {checkPassword, htmlPageRequest, writeContact} from "./server-request-handler.js";
+import {checkPassword, checkUsername, createProfile, htmlPageRequest, writeContact} from "./server-request-handler.js";
 
 const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -20,6 +20,12 @@ const server = http.createServer((req, res) => {
     }
     else if(req.url == '/Networking/checkPassword'){
         checkPassword(req, res);
+    }
+    else if(req.url == '/Networking/checkUsername'){
+        checkUsername(req, res);
+    }
+    else if(req.url == '/Networking/createProfile'){
+        createProfile(req, res);
     }
     else{
         htmlPageRequest(req, res);
