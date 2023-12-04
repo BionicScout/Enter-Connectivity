@@ -1,0 +1,132 @@
+<html lang="en">
+    <!-- Function that adds jquery to file -->
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous">
+    </script>
+
+    <!-- Function that adds the header to this file -->
+    <script> 
+        $(function(){
+          $("#header").load("header.html");  
+        });
+    </script> 
+
+    <head>
+        <!-- Base File Set Up -->
+        <title>Enter-Connectivity</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Load BootStrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+
+    <script src="client-request.js"></script>
+    
+    <body>
+        <!-- Add Header  -->
+        <div id="header"></div>
+
+        <h1>Who To Contact</h1>
+
+        <!-- List of Contacts -->
+        <div class="container mt-5">
+            <ul class="list-group mx-5" id="ContactList"></ul>
+        </div>
+
+        <!-- Template for Contact List -->
+        <template>
+            <li class="list-group-item mx-5">
+                <!-- Name and Last Contact Date -->
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-0" id="Name">Name</h5>
+                    <p class="fs-6 pb-0 mb-0" id="LastContactDate">Last Contacted</p>
+                </div>
+                
+                <!-- Email -->
+                <div class="d-flex pr-0 mr-0">
+                    <p class="fs-6 pb-0 mb-0" id="EmailText">email@domain.com</p>
+                </div>
+
+                <!-- Birthday Text and Phone Number-->
+                <div class="d-flex justify-content-between pr-0 mr-0">
+                    <p class="fs-6 pb-0 mb-0" id="PhoneText">###-###-####</p>
+                    <p></p>
+                    <p class="fs-6 pb-0 mb-0" id="BirthdayText">It's my Birthday!</p>
+                </div>   
+            </li>  
+        </template>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        
+        <!-- Create Dynimaic List of Contacts -->
+        <script>
+            getContacts();
+
+            async function getContacts(){
+                //Get Username and Password
+                console.log(sessionStorage.getItem('username'));
+                console.log(sessionStorage.getItem('password'));
+
+                let username = sessionStorage.getItem('username');
+                let password = sessionStorage.getItem('password');
+
+                //Get Contact List
+                let contactList = await requestContacts(username, password);
+                console.log(contactList);
+
+                //If thetoday is the person's birthday or if the person hasn't been contacted since 
+                contactList.forEach(element => {
+                    let bday = stringToDate(element.birthday);
+                    let today = new Date();
+                    let isBirthday = (bday.getDate() == today.getDate() && bday.getMonth() == today.getMonth());
+
+                    let timeSincecontact = (today.getTime() - stringToDate(element.lastContacted).getTime()) / (1000 * 60 * 60 * 24);
+
+                    if(isBirthday || timeSincecontact >= element.contactFequency)
+                        createNewContactTemplate(element, isBirthday);
+                });
+            }
+
+            function createNewContactTemplate(contactInfo, isBirthday) {
+                //Create Template
+                let template = document.getElementsByTagName("template")[0];
+                let contact = template.content.cloneNode(true);
+                
+                //Update Name
+                contact.getElementById("Name").innerHTML = contactInfo.name;
+
+                //Update ast Contact Date
+                var today = new Date();
+                var lastContact = stringToDate(contactInfo.lastContacted);
+                let timeSincecontact = (today.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24);
+                contact.getElementById("LastContactDate").innerHTML = Math.floor(timeSincecontact) + " Days Ago";
+
+                //Update Email and Phone Number
+                contact.getElementById("EmailText").innerHTML = contactInfo.email;
+                contact.getElementById("PhoneText").innerHTML = contactInfo.phone;
+
+                //Bday
+                if(!isBirthday)
+                    contact.getElementById("BirthdayText").style.display = 'none';
+
+                //Add to List
+                let parent = document.getElementById("ContactList");
+                parent.appendChild(contact);
+            }
+
+            function stringToDate(dateAsString){
+                //Get Year, month, and year
+                let year = dateAsString.substring(0, 4);
+                let month = dateAsString.substring(5, dateAsString.lastIndexOf("-"));
+                let day = dateAsString.substring(dateAsString.lastIndexOf("-") + 1, dateAsString.length);
+
+                //Convert to date
+                let date = new Date(year, month - 1, day);
+                return date;
+            }
+        </script>
+    </body>
+</html>
