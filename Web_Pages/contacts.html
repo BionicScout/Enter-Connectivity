@@ -71,7 +71,7 @@
                 <!-- Edit Button -->
                 <div class="d-flex justify-content-between pr-0 mr-0">
                     <p class="p-0 m-0"></p>
-                    <a class="btn py-1 px-0 m-0" role="button" href="Edit.html">
+                    <a class="btn py-1 px-0 m-0" role="button" onclick="EditButton(this.getAttribute('id'))" id="EditButton">
                         <img src="/Assests/Edit.png" alt="" width="19" height="18" >
                     </a>
                 </div>            
@@ -96,12 +96,14 @@
                 let contactList = await requestContacts(username, password);
                 console.log(contactList);
 
+                var id = 0;
                 contactList.forEach(element => {
-                    createNewContactTemplate(element);
+                    createNewContactTemplate(element, id);
+                    id++
                 });
             }
 
-            function createNewContactTemplate(contactInfo) {
+            function createNewContactTemplate(contactInfo, id) {
                 //Create Template
                 let template = document.getElementsByTagName("template")[0];
                 let contact = template.content.cloneNode(true);
@@ -115,20 +117,33 @@
                 let timeSincecontact = (today.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24);
                 contact.getElementById("LastContactDate").innerHTML = Math.floor(timeSincecontact) + " Days Ago";
 
+                //Update Edit Button Id to have Contact name
+                contact.getElementById("EditButton").setAttribute( "onClick", "EditButton(" + id.toString() +");" );
+
                 //Add to List
                 let parent = document.getElementById("ContactList");
                 parent.appendChild(contact);
             }
 
-            function stringToDate(dateAsString){
-                //Get Year, month, and year
-                let year = dateAsString.substring(0, 4);
-                let month = dateAsString.substring(5, 7);
-                let day = dateAsString.substring(8, 10);
+            async function EditButton(id){
+                //Get Username and Password
+                let username = sessionStorage.getItem('username');
+                let password = sessionStorage.getItem('password');
 
-                //Convert to date
-                let date = new Date(year, month - 1, day);
-                return date;
+                //Get Contact
+                let contactList = await requestContacts(username, password);
+                let contact = contactList[id];
+
+                //Save Info in Session Storage
+                sessionStorage.setItem("name", contact.name);
+                sessionStorage.setItem("birthday", contact.birthday);
+                sessionStorage.setItem("email", contact.email);
+                sessionStorage.setItem("phone", contact.phone);
+                sessionStorage.setItem("lastContacted", contact.lastContacted);
+                sessionStorage.setItem("contactFrequency", contact.contactFequency);
+                sessionStorage.setItem("contactId", id);
+
+                window.location.href="edit.html";
             }
         </script>
     </body>

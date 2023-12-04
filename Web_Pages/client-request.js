@@ -118,3 +118,19 @@ function getOptions(dataToSend){
 
     return options;
 }
+
+function stringToDate(dateAsString){
+    //Get Year, month, and year
+    let year = dateAsString.substring(0, 4);
+    let month = dateAsString.substring(5, dateAsString.lastIndexOf("-"));
+    let day = dateAsString.substring(dateAsString.lastIndexOf("-") + 1, dateAsString.length);
+
+    //Convert to date
+    let date = new Date(year, month - 1, day);
+    return date;
+}
+
+function dateToString(date){
+    let string = date.getFullYear() + "-" + ('0' + (date.getMonth() + 1)).slice(-2) + "-" + ('0' + date.getDate()).slice(-2);
+    return string;
+}

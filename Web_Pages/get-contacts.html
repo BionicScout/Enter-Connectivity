@@ -108,24 +108,13 @@
                 contact.getElementById("EmailText").innerHTML = contactInfo.email;
                 contact.getElementById("PhoneText").innerHTML = contactInfo.phone;
 
-                //Bday
+                //Display Birthday if it is there birthday
                 if(!isBirthday)
                     contact.getElementById("BirthdayText").style.display = 'none';
 
                 //Add to List
                 let parent = document.getElementById("ContactList");
                 parent.appendChild(contact);
-            }
-
-            function stringToDate(dateAsString){
-                //Get Year, month, and year
-                let year = dateAsString.substring(0, 4);
-                let month = dateAsString.substring(5, dateAsString.lastIndexOf("-"));
-                let day = dateAsString.substring(dateAsString.lastIndexOf("-") + 1, dateAsString.length);
-
-                //Convert to date
-                let date = new Date(year, month - 1, day);
-                return date;
             }
         </script>
     </body>
