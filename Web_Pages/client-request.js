@@ -106,7 +106,18 @@ async function requestWriteContact(dataToSend){
         .catch(error => console.error('Fetch error:', error));
 }
 
+async function requestEditContact(dataToSend){
+    let options = getOptions(dataToSend);
+    console.log("Data:\n" + options.body);
 
+    //Send Request to Server
+    console.log("Server Request");
+
+    await fetch('/Networking/editContact', options)
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Fetch error:', error));
+}
 
 //Utility Functions
 function getOptions(dataToSend){

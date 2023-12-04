@@ -3,7 +3,7 @@ import path from 'path';
 import fs from "fs";
 
 import {contactCreate, separateContacts, textContact, outputContacts, dateToText, textToDate} from "./contact.js";
-import {addContact, doesFileExist, readContacts, writeContacts} from "./read-write.js";
+import {addContact, doesFileExist, readContacts, editContact, writeContacts} from "./read-write.js";
 
 //Utility Fuctions and Variables
 const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -75,6 +75,50 @@ export function writeContact(req, res){
             
         let dataTXT = textContact(contact);
         addContact(receivedData.username, receivedData.password, dataTXT);
+
+        //Respond to the client
+        const responseData = { message: 'Server Respone - Contact Created!' };
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(responseData));
+
+        console.log("\n");
+    });        
+}
+
+export function updateContact(req, res){
+    //Get Data
+    let incomingData = "";
+
+    req.on('data', chunk => {
+        console.log("DATA AREA");
+        incomingData += chunk.toString();
+    });
+
+    //Once Data is collected, use it
+    req.on('end', () => {
+        console.log("END AREA");
+        //Turn Data to JSON
+        console.log("Received Data:")
+        console.log(incomingData)
+        const receivedData = JSON.parse(incomingData);
+        console.log(receivedData);
+        
+        //Create Contact
+        let contact = contactCreate(
+            receivedData.name, 
+            new Date(receivedData.bday),
+            receivedData.email,
+            receivedData.phone,
+            new Date(receivedData.last_contact),
+            receivedData.contact_interval
+        );
+            
+        let dataTXT = textContact(contact);
+        console.log("User: " + receivedData.username);
+        console.log("Pass: " + receivedData.password);
+        console.log("ID: " + receivedData.id);
+        editContact(receivedData.username, receivedData.password, receivedData.id, dataTXT);
+        console.log("Here");
 
         //Respond to the client
         const responseData = { message: 'Server Respone - Contact Created!' };

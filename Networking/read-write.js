@@ -86,6 +86,24 @@ export async function addContact(username, password, newContact){
     await writeContacts(username, password, newList);
 }
 
+export async function editContact(username, password, id, newContact){
+    console.log("\nAdd Contact");
+    //Get Old Contacts
+    let data = await readContacts(username, password);
+    let contactList = separateContacts(data);
+
+    //Turn Old contacts into string
+    let newList = "";
+    for(let i = 0; i < contactList.length; i++){
+        if(i != id)
+            newList += textContact(contactList[i]);
+    }
+
+    //Add New contact and Save data
+    newList += newContact;
+    await writeContacts(username, password, newList);
+}
+
 export function doesFileExist(filename){
     if(fs.existsSync(filename)){
         return true;

@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 
-import {checkPassword, checkUsername, createProfile, getContacts, htmlPageRequest, writeContact} from "./server-request-handler.js";
+import {checkPassword, checkUsername, createProfile, updateContact, getContacts, htmlPageRequest, writeContact} from "./server-request-handler.js";
 
 const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -44,6 +44,10 @@ function backendDelegator(res, req){
     else if(req.url == '/Networking/createProfile'){
         createProfile(req, res);
         return true
+    }
+    else if(req.url == "/Networking/editContact"){
+        updateContact(req, res);
+        return true;
     }
     else if(req.url == '/Networking/getContacts'){
         getContacts(req, res);

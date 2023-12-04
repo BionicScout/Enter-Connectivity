@@ -95,15 +95,10 @@
         //Save all elements 
         document.getElementById('validationName').value = sessionStorage.getItem("name");
         document.getElementById('validationBirthday').value = dateToString(stringToDate(sessionStorage.getItem("birthday")));
-        document.getElementById('validationEmail').value = sessionStorage.getItem("email");
-        document.getElementById('validationPhoneNumber').value = sessionStorage.getItem("phone");
+        document.getElementById('validationEmail').value = sessionStorage.getItem("phone");
+        document.getElementById('validationPhoneNumber').value = sessionStorage.getItem("email");
         document.getElementById('validationLastContact').value = dateToString(stringToDate(sessionStorage.getItem("lastContacted")));
         document.getElementById('validationFrequency').value = sessionStorage.getItem("contactFrequency");
-
-        console.log(document.getElementById('validationBirthday').value);
-        console.log(document.getElementById('validationLastContact').value);
-
-        //document.getElementById('validationLastContact').value = "2023-10-14";
 
         //Clear Session storage of these values
         sessionStorage.removeItem("name");
@@ -138,6 +133,7 @@
         let dataToSend = {
           username: sessionStorage.getItem('username'),
           password: sessionStorage.getItem('password'),
+          id: sessionStorage.getItem('contactId'),
           name: document.getElementById('validationName').value,
           bday: document.getElementById('validationBirthday').value,
           email: document.getElementById('validationPhoneNumber').value,
@@ -146,7 +142,7 @@
           contact_interval: document.getElementById('validationFrequency').value
         }
 
-        await requestWriteContact(dataToSend);
+        await requestEditContact(dataToSend);
 
         //Go Back To Contact Page
         window.location.href="contacts.html";
