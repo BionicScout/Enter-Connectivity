@@ -108,9 +108,6 @@
         sessionStorage.removeItem("lastContacted");
         sessionStorage.removeItem("contactFrequency");
 
-
-
-
       $('#SubmitButton').on('click', async function (e) {
         //Validate all Fields for valid input
         var forms = document.querySelectorAll('.needs-validation');
@@ -118,7 +115,6 @@
         var valid = true;
         for (let i = 0; i < forms.length; i++) {
             if (!forms[i].checkValidity()) {
-                //forms[i].reportValidity();
                 forms[i].classList.add('was-validated')
                 valid = false;
             }
@@ -143,6 +139,7 @@
         }
 
         await requestEditContact(dataToSend);
+        sessionStorage.removeItem("contactId");
 
         //Go Back To Contact Page
         window.location.href="contacts.html";

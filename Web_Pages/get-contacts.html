@@ -77,14 +77,17 @@
                 let contactList = await requestContacts(username, password);
                 console.log(contactList);
 
-                //If thetoday is the person's birthday or if the person hasn't been contacted since 
+                //If Contact meet the criteria, then display contact
                 contactList.forEach(element => {
+                    //Check if Birthday
                     let bday = stringToDate(element.birthday);
                     let today = new Date();
                     let isBirthday = (bday.getDate() == today.getDate() && bday.getMonth() == today.getMonth());
 
+                    //Get time since last contact
                     let timeSincecontact = (today.getTime() - stringToDate(element.lastContacted).getTime()) / (1000 * 60 * 60 * 24);
 
+                    //If today is the person's birthday or if the person hasn't been contacted over the contact frequency 
                     if(isBirthday || timeSincecontact >= element.contactFequency)
                         createNewContactTemplate(element, isBirthday);
                 });
