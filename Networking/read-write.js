@@ -67,6 +67,12 @@ export async function writeContacts(username, password,data){
     console.log('file was appended');
 }
 
+/**
+ * addContacts adds a new contact to the end of user's data file
+ * @param {string} username
+ * @param {string} password
+ * @param {JSON} newContact
+ */
 export async function addContact(username, password, newContact){
     console.log("\nAdd Contact");
     //Get Old Contacts
@@ -86,6 +92,13 @@ export async function addContact(username, password, newContact){
     await writeContacts(username, password, newList);
 }
 
+/**
+ * editContacts deletes the contact matching id and then addes the modified version to the file.
+ * @param {string} username
+ * @param {string} password
+ * @param {int} id
+ * @param {JSON} newContact
+ */
 export async function editContact(username, password, id, newContact){
     console.log("\nAdd Contact");
     //Get Old Contacts
@@ -104,6 +117,10 @@ export async function editContact(username, password, id, newContact){
     await writeContacts(username, password, newList);
 }
 
+/**
+ * doesFileExist returns true if the file exists and false if not.
+ * @param {string} filename
+ */
 export function doesFileExist(filename){
     if(fs.existsSync(filename)){
         return true;
