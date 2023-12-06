@@ -6,8 +6,14 @@ import {contactCreate, separateContacts, textContact, outputContacts, dateToText
 import {addContact, doesFileExist, readContacts, editContact, writeContacts} from "./read-write.js";
 
 //Utility Fuctions and Variables
-const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url))); //Gets Project Folder Path
 
+
+/*
+    This function takes in the path of the file and returns a string represnting the type of file. 
+    @param filePath - the path to the file
+    @return - a string holding the file type of the file
+*/
 function getContentType(filePath) {
     const extname = path.extname(filePath);
     switch (extname) {
@@ -29,14 +35,22 @@ function getContentType(filePath) {
 
 
 //Wep Page Request
+
+/*
+    This function request a specific html page and returns all element for the page: including images, js files/functions, and other html files. 
+    @param req - This variable holds all information for the request.
+    @param res - This variable stores all information needing to be sent back to front-end.
+*/
 export function htmlPageRequest(req, res){
+    //Get path to file
     const filePath = path.join(__dirname, "Web_Pages", req.url);
     console.log(filePath);
 
+    //For each file in an html page (jpeg, png, js scripts, other html pages), load information into write head
     fs.readFile(filePath, (err, data) => {
         if (err) {
             res.writeHead(404, { 'Content-Type': 'text/plain' });
-            res.end('File not found - ' + err.message);
+            res.end('404 File not found - ' + err.message);
         } else {
             // Determine the content type based on file extension
             const contentType = getContentType(filePath);
@@ -47,6 +61,12 @@ export function htmlPageRequest(req, res){
 }
 
 //Backend Request Handling
+
+/*
+    This function request takes in contact information along with username and password and adds the user's contact to end of the contact list.
+    @param req - This variable holds all information for the request.
+    @param res - This variable stores all information needing to be sent back to front-end.
+*/
 export function writeContact(req, res){
     //Get Data
     let incomingData = "";
@@ -85,6 +105,12 @@ export function writeContact(req, res){
     });        
 }
 
+/*
+    This function request changes a previous contact. To do this the request send the username, password, id, and updated contact info and then it will
+    delete the old contact and add the updated one at the end. The id represents wich contact to delete.
+    @param req - This variable holds all information for the request.
+    @param res - This variable stores all information needing to be sent back to front-end.
+*/
 export function updateContact(req, res){
     //Get Data
     let incomingData = "";
@@ -129,6 +155,13 @@ export function updateContact(req, res){
     });        
 }
 
+
+/* 
+    This function request the server to checks if the password matches a username. this first checks if the username exists and then it check if the
+    password is right. If the username doesn't exist or if the passwor doesn't match, a bool failed is returned in respone. Otherwise it is true.
+    @param req - This variable holds all information for the request.
+    @param res - This variable stores all information needing to be sent back to front-end.
+*/
 export function checkPassword(req, res){
     //Get Data
     let incomingData = "";
@@ -175,6 +208,11 @@ export function checkPassword(req, res){
     });        
 }
 
+/*
+    This function request checks if a username exist. If the username does exist, it returns true, if not it returns false.
+    @param req - This variable holds all information for the request.
+    @param res - This variable stores all information needing to be sent back to front-end.
+*/
 export function checkUsername(req, res){
     //Get Data
     let incomingData = "";
@@ -207,6 +245,11 @@ export function checkUsername(req, res){
     });        
 }
 
+/*
+    This function request creates a new profile. To do this, the request creates a new contact file and then writes the password to the top line of the file.
+    @param req - This variable holds all information for the request.
+    @param res - This variable stores all information needing to be sent back to front-end.
+*/
 export function createProfile(req, res){
     //Get Data
     let incomingData = "";
@@ -235,6 +278,12 @@ export function createProfile(req, res){
     });        
 }
 
+/*
+    This function request ask to get all the contacts for one user. To do this, the server reader the user's file (after checkin the password is right)
+    and then saves all the contacts as json in res, which is returned to the server. 
+    @param req - This variable holds all information for the request.
+    @param res - This variable stores all information needing to be sent back to front-end.
+*/
 export function getContacts(req, res){
     //Get Data
     let incomingData = "";
