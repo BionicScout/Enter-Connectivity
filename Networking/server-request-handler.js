@@ -9,8 +9,8 @@ import {addContact, doesFileExist, readContacts, editContact, writeContacts} fro
 const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url))); //Gets Project Folder Path
 
 
-/*
-    This function takes in the path of the file and returns a string represnting the type of file. 
+/**
+    This function takes in the path of the file and returns a string represnting the type of file.
     @param filePath - the path to the file
     @return - a string holding the file type of the file
 */
@@ -36,8 +36,8 @@ function getContentType(filePath) {
 
 //Wep Page Request
 
-/*
-    This function request a specific html page and returns all element for the page: including images, js files/functions, and other html files. 
+/**
+    This function request a specific html page and returns all element for the page: including images, js files/functions, and other html files.
     @param req - This variable holds all information for the request.
     @param res - This variable stores all information needing to be sent back to front-end.
 */
@@ -62,7 +62,7 @@ export function htmlPageRequest(req, res){
 
 //Backend Request Handling
 
-/*
+/**
     This function request takes in contact information along with username and password and adds the user's contact to end of the contact list.
     @param req - This variable holds all information for the request.
     @param res - This variable stores all information needing to be sent back to front-end.
@@ -82,17 +82,17 @@ export function writeContact(req, res){
         console.log(incomingData)
         const receivedData = JSON.parse(incomingData);
         console.log(receivedData);
-        
+
         //Create Contact
         let contact = contactCreate(
-            receivedData.name, 
+            receivedData.name,
             new Date(receivedData.bday),
             receivedData.email,
             receivedData.phone,
             new Date(receivedData.last_contact),
             receivedData.contact_interval
         );
-            
+
         let dataTXT = textContact(contact);
         addContact(receivedData.username, receivedData.password, dataTXT);
 
@@ -102,10 +102,10 @@ export function writeContact(req, res){
         res.end(JSON.stringify(responseData));
 
         console.log("\n");
-    });        
+    });
 }
 
-/*
+/**
     This function request changes a previous contact. To do this the request send the username, password, id, and updated contact info and then it will
     delete the old contact and add the updated one at the end. The id represents wich contact to delete.
     @param req - This variable holds all information for the request.
@@ -128,17 +128,17 @@ export function updateContact(req, res){
         console.log(incomingData)
         const receivedData = JSON.parse(incomingData);
         console.log(receivedData);
-        
+
         //Create Contact
         let contact = contactCreate(
-            receivedData.name, 
+            receivedData.name,
             new Date(receivedData.bday),
             receivedData.email,
             receivedData.phone,
             new Date(receivedData.last_contact),
             receivedData.contact_interval
         );
-            
+
         let dataTXT = textContact(contact);
         console.log("User: " + receivedData.username);
         console.log("Pass: " + receivedData.password);
@@ -152,11 +152,11 @@ export function updateContact(req, res){
         res.end(JSON.stringify(responseData));
 
         console.log("\n");
-    });        
+    });
 }
 
 
-/* 
+/**
     This function request the server to checks if the password matches a username. this first checks if the username exists and then it check if the
     password is right. If the username doesn't exist or if the passwor doesn't match, a bool failed is returned in respone. Otherwise it is true.
     @param req - This variable holds all information for the request.
@@ -177,7 +177,7 @@ export function checkPassword(req, res){
         const receivedData = JSON.parse(incomingData);
         console.log("Username: " + receivedData.username);
         console.log("Password: " + receivedData.password);
-        
+
         //Check if User Name is there
         if(doesFileExist("./Contacts/"+ receivedData.username +".txt")){
         //Check Password Match
@@ -205,10 +205,10 @@ export function checkPassword(req, res){
         }
 
         console.log("\n");
-    });        
+    });
 }
 
-/*
+/**
     This function request checks if a username exist. If the username does exist, it returns true, if not it returns false.
     @param req - This variable holds all information for the request.
     @param res - This variable stores all information needing to be sent back to front-end.
@@ -227,7 +227,7 @@ export function checkUsername(req, res){
         console.log("Incoming Data:\n" + incomingData + "\n" + typeof(incomingData));
         const receivedData = JSON.parse(incomingData);
         console.log("Username: " + receivedData.username);
-        
+
         //Check if User Name is there
         if(doesFileExist("./Contacts/"+ receivedData.username +".txt")){
             const responseData = { message: 'Server Respone - Username is not available', match: false };
@@ -242,10 +242,10 @@ export function checkUsername(req, res){
 
 
         console.log("\n");
-    });        
+    });
 }
 
-/*
+/**
     This function request creates a new profile. To do this, the request creates a new contact file and then writes the password to the top line of the file.
     @param req - This variable holds all information for the request.
     @param res - This variable stores all information needing to be sent back to front-end.
@@ -265,7 +265,7 @@ export function createProfile(req, res){
         console.log(incomingData)
         const receivedData = JSON.parse(incomingData);
         console.log(receivedData);
-        
+
         //Create Profile
         writeContacts(receivedData.username, receivedData.password, "");
 
@@ -275,12 +275,12 @@ export function createProfile(req, res){
         res.end(JSON.stringify(responseData));
 
         console.log("\n");
-    });        
+    });
 }
 
-/*
+/**
     This function request ask to get all the contacts for one user. To do this, the server reader the user's file (after checkin the password is right)
-    and then saves all the contacts as json in res, which is returned to the server. 
+    and then saves all the contacts as json in res, which is returned to the server.
     @param req - This variable holds all information for the request.
     @param res - This variable stores all information needing to be sent back to front-end.
 */
@@ -299,7 +299,7 @@ export function getContacts(req, res){
         console.log(incomingData)
         const receivedData = JSON.parse(incomingData);
         console.log(receivedData);
-        
+
         //Create Profile
         let data = await readContacts(receivedData.username, receivedData.password);
         let contactList = separateContacts(data);
@@ -310,5 +310,5 @@ export function getContacts(req, res){
         res.end(JSON.stringify(responseData));
 
         console.log("\n");
-    });        
+    });
 }

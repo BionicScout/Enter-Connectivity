@@ -3,10 +3,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 
+//import functions
 import {checkPassword, checkUsername, createProfile, updateContact, getContacts, htmlPageRequest, writeContact} from "./server-request-handler.js";
 
+//Find the directory
 const __dirname = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
+//Create a server variable with request and response
 const server = http.createServer((req, res) => {
     //Cross-Origin Resource Sharing, helps get information from front end
     cors();
@@ -17,7 +20,7 @@ const server = http.createServer((req, res) => {
     //Select Html request or backend request
     if(backendDelegator(res, req) == false){
         htmlPageRequest(req, res);
-    }    
+    }
 
     console.log("\n");
 });
@@ -54,6 +57,6 @@ function backendDelegator(res, req){
         getContacts(req, res);
         return true
     }
-   
+
     return false;
 }
