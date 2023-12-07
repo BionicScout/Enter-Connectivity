@@ -29,34 +29,11 @@
         <!-- Add Header  -->
         <div id="header"></div>
 
-        <h1>Enter-Connectivity</h1>
+        <h1>Who To Contact</h1>
 
-        <!-- Main Layout -->
-        <div class="container">
-            <!-- Add Button -->
-            <div class="d-flex justify-content-end mx-5">
-                <a class="btn btn-primary btn-xs m-1 mx-5" role="button" href="add.html">Add</a>
-            </div>
-
-            <!-- List of Contacts -->
-            <ul class="list-group mx-5" id="ContactList">
-                <!-- Example Contact -->
-                <li class="list-group-item mx-5">
-                    <!-- Name and Last Contact Date -->
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-0">Name</h5>
-                        <p class="fs-6 pb-0 mb-0">Last Contacted</p>
-                    </div>
-
-                    <!-- Edit Button -->
-                    <div class="d-flex justify-content-between pr-0 mr-0">
-                        <p class="p-0 m-0"></p>
-                        <a class="btn py-1 px-0 m-0" role="button" href="#">
-                            <img src="/Assests/Edit.png" alt="" width="19" height="18" >
-                        </a>
-                    </div>  
-                </li>
-            </ul>
+        <!-- List of Contacts -->
+        <div class="container mt-5">
+            <ul class="list-group mx-5" id="ContactList"></ul>
         </div>
 
         <!-- Template for Contact List -->
@@ -68,13 +45,17 @@
                     <p class="fs-6 pb-0 mb-0" id="LastContactDate">Last Contacted</p>
                 </div>
                 
-                <!-- Edit Button -->
+                <!-- Email -->
+                <div class="d-flex pr-0 mr-0">
+                    <p class="fs-6 pb-0 mb-0" id="EmailText">email@domain.com</p>
+                </div>
+
+                <!-- Birthday Text and Phone Number-->
                 <div class="d-flex justify-content-between pr-0 mr-0">
-                    <p class="p-0 m-0"></p>
-                    <a class="btn py-1 px-0 m-0" role="button" onclick="EditButton(this.getAttribute('id'))" id="EditButton">
-                        <img src="/Assests/Edit.png" alt="" width="19" height="18" >
-                    </a>
-                </div>            
+                    <p class="fs-6 pb-0 mb-0" id="PhoneText">###-###-####</p>
+                    <p></p>
+                    <p class="fs-6 pb-0 mb-0" id="BirthdayText">It's my Birthday!</p>
+                </div>   
             </li>  
         </template>
 
@@ -96,54 +77,47 @@
                 let contactList = await requestContacts(username, password);
                 console.log(contactList);
 
-                var id = 0;
+                //If Contact meet the criteria, then display contact
                 contactList.forEach(element => {
-                    createNewContactTemplate(element, id);
-                    id++
+                    //Check if Birthday
+                    let bday = stringToDate(element.birthday);
+                    let today = new Date();
+                    let isBirthday = (bday.getDate() == today.getDate() && bday.getMonth() == today.getMonth());
+
+                    //Get time since last contact
+                    let timeSincecontact = (today.getTime() - stringToDate(element.lastContacted).getTime()) / (1000 * 60 * 60 * 24);
+
+                    //If today is the person's birthday or if the person hasn't been contacted over the contact frequency 
+                    if(isBirthday || timeSincecontact >= element.contactFequency)
+                        createNewContactTemplate(element, isBirthday);
                 });
             }
 
-            function createNewContactTemplate(contactInfo, id) {
+            function createNewContactTemplate(contactInfo, isBirthday) {
                 //Create Template
                 let template = document.getElementsByTagName("template")[0];
                 let contact = template.content.cloneNode(true);
                 
-                //Update Template Name
+                //Update Name
                 contact.getElementById("Name").innerHTML = contactInfo.name;
 
-                //Update Template Last Contact Date
+                //Update ast Contact Date
                 var today = new Date();
                 var lastContact = stringToDate(contactInfo.lastContacted);
                 let timeSincecontact = (today.getTime() - lastContact.getTime()) / (1000 * 60 * 60 * 24);
                 contact.getElementById("LastContactDate").innerHTML = Math.floor(timeSincecontact) + " Days Ago";
 
-                //Update Edit Button Id to have Contact name
-                contact.getElementById("EditButton").setAttribute( "onClick", "EditButton(" + id.toString() +");" );
+                //Update Email and Phone Number
+                contact.getElementById("EmailText").innerHTML = contactInfo.email;
+                contact.getElementById("PhoneText").innerHTML = contactInfo.phone;
+
+                //Display Birthday if it is there birthday
+                if(!isBirthday)
+                    contact.getElementById("BirthdayText").style.display = 'none';
 
                 //Add to List
                 let parent = document.getElementById("ContactList");
                 parent.appendChild(contact);
-            }
-
-            async function EditButton(id){
-                //Get Username and Password
-                let username = sessionStorage.getItem('username');
-                let password = sessionStorage.getItem('password');
-
-                //Get Contact
-                let contactList = await requestContacts(username, password);
-                let contact = contactList[id];
-
-                //Save Info in Session Storage
-                sessionStorage.setItem("name", contact.name);
-                sessionStorage.setItem("birthday", contact.birthday);
-                sessionStorage.setItem("email", contact.email);
-                sessionStorage.setItem("phone", contact.phone);
-                sessionStorage.setItem("lastContacted", contact.lastContacted);
-                sessionStorage.setItem("contactFrequency", contact.contactFequency);
-                sessionStorage.setItem("contactId", id);
-
-                window.location.href="edit.html";
             }
         </script>
     </body>

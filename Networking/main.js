@@ -1,3 +1,6 @@
+/**
+ * THIS IS A BOILERPLATE TEST SCENARIO
+ */
 //Import all the necessary functions
 import {contactCreate,separateContacts,textContact, outputContacts, dateToText, textToDate} from "./contact.js";
 import {readContacts, writeContacts} from "./read-write.js";

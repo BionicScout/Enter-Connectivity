@@ -1,32 +1,151 @@
 <html lang="en">
-    <!-- Function that adds jquery to file -->
-    <script
+  <!-- Function that adds jquery to file -->
+  <script
     src="https://code.jquery.com/jquery-3.3.1.js"
     integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
     crossorigin="anonymous">
-    </script>
+  </script>
 
-    <!-- Function that adds the header to this file -->
-    <script> 
-        $(function(){
-          $("#header").load("header.html");  
-        });
-    </script> 
+  <!-- Function that adds the header to this file -->
+  <script> 
+      $(function(){
+        $("#header").load("header.html");  
+      });
+  </script> 
+
+<!-- Load Server Request Functions -->
+<script src="client-request.js"></script>
 
 <head>
-    <title>Edit</title>
-
+    <!-- Base File Set Up -->
+    <title>Enter-Connectivity</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-</head>
-<body>
+    <!-- Load BootStrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  </head>
+  <body>
     <!-- Add Header  -->
     <div id="header"></div>
 
-    <h1>Edit Page</h1>
+    <h1>Edit Contact</h1>
+
+    <!-- Input Fields -->
+    <div class="container">
+      <form class="row g-3 needs-validation" novalidate>
+        <!-- Name Input -->
+        <div class="col-md-6">
+          <label for="validationName" class="form-label">Name</label>
+          <input type="text" class="form-control" id="validationName" placeholder="ex. John Doe" required>
+        </div>
+            
+        <!-- Birtday -->
+        <div class="col-md-3">
+          <label for="validationBirthday" class="form-label">Birthday</label>
+          <div class="input-group has-validation">
+            <input type="date" class="form-control" id="validationBirthday" aria-describedby="inputGroupPrepend" required>
+          </div>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="col-md-3">
+            <label for="validationPhoneNumber" class="form-label">Phone Number</label>
+            <div class="input-group has-validation">
+              <input type="tel" class="form-control" id="validationPhoneNumber" pattern="\d{3}[\-]\d{3}[\-]\d{4}" aria-describedby="inputGroupPrepend" placeholder="###-###-####" required>
+            </div>
+          </div>
+
+        <!-- Email -->
+        <div class="col-md-12">
+          <label for="validationEmail" class="form-label">Email</label>
+          <input type="email" class="form-control" id="validationEmail" placeholder="ex. john@gmail.com" required>
+          <div class="invalid-feedback">
+            Please provide a valid email address
+          </div>
+        </div>
+
+        <!-- Last Contact Date -->
+        <div class="col-md-2">
+            <label for="validationLastContact" class="form-label">Last Contacted</label>
+            <div class="input-group has-validation">
+                <input type="date" class="form-control" id="validationLastContact" aria-describedby="inputGroupPrepend" required>
+            </div>
+        </div>
+
+        <!--  Contact Frequency -->
+        <div class="col-md-4">
+          <label for="validationFrequency" class="form-label">How often do you want to contact? (In Days)</label>
+          <input type="number" class="form-control" min="1" max="365" id="validationFrequency" value="30" required>
+          <div class="invalid-feedback">
+            Please provide a number between 1 and 365
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-12">
+          <button class="btn btn-primary" type="button" id="SubmitButton">Submit form</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+        //On Load
+
+        //Save all elements 
+        document.getElementById('validationName').value = sessionStorage.getItem("name");
+        document.getElementById('validationBirthday').value = dateToString(stringToDate(sessionStorage.getItem("birthday")));
+        document.getElementById('validationEmail').value = sessionStorage.getItem("phone");
+        document.getElementById('validationPhoneNumber').value = sessionStorage.getItem("email");
+        document.getElementById('validationLastContact').value = dateToString(stringToDate(sessionStorage.getItem("lastContacted")));
+        document.getElementById('validationFrequency').value = sessionStorage.getItem("contactFrequency");
+
+        //Clear Session storage of these values
+        sessionStorage.removeItem("name");
+        sessionStorage.removeItem("birthday");
+        sessionStorage.removeItem("email");
+        sessionStorage.removeItem("phone");
+        sessionStorage.removeItem("lastContacted");
+        sessionStorage.removeItem("contactFrequency");
+
+      $('#SubmitButton').on('click', async function (e) {
+        //Validate all Fields for valid input
+        var forms = document.querySelectorAll('.needs-validation');
+        
+        var valid = true;
+        for (let i = 0; i < forms.length; i++) {
+            if (!forms[i].checkValidity()) {
+                forms[i].classList.add('was-validated')
+                valid = false;
+            }
+        }
+
+        if(!valid){
+          console.log("Not Valid Submission");
+          return;
+        }
+
+        //Add Contact
+        let dataToSend = {
+          username: sessionStorage.getItem('username'),
+          password: sessionStorage.getItem('password'),
+          id: sessionStorage.getItem('contactId'),
+          name: document.getElementById('validationName').value,
+          bday: document.getElementById('validationBirthday').value,
+          email: document.getElementById('validationPhoneNumber').value,
+          phone: document.getElementById('validationEmail').value,
+          last_contact: document.getElementById('validationLastContact').value,
+          contact_interval: document.getElementById('validationFrequency').value
+        }
+
+        await requestEditContact(dataToSend);
+        sessionStorage.removeItem("contactId");
+
+        //Go Back To Contact Page
+        window.location.href="contacts.html";
+      })
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-</body>
+  </body>
 </html>

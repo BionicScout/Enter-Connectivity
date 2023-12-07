@@ -1,6 +1,8 @@
 import error from "console";
 import fs from "fs";
-import readline from "readline"
+import readline from "readline";
+
+import {separateContacts, textContact} from "./contact.js";
 
 /**
  * readContacts reads all the information in the text file that uses username as a name.
@@ -26,11 +28,14 @@ export async function readContacts(username, password){
             continue;
         }else{
             console.log("Incorrect Password");
+            data.push(false)
             break;
         }
     }
     data.push(line)
   }
+
+  console.log("DATA: " + data);
   return data;
 }
 
@@ -60,4 +65,65 @@ export async function writeContacts(username, password,data){
 
     await fs.promises.appendFile(filename, data)
     console.log('file was appended');
+}
+
+/**
+ * addContacts adds a new contact to the end of user's data file
+ * @param {string} username
+ * @param {string} password
+ * @param {JSON} newContact
+ */
+export async function addContact(username, password, newContact){
+    console.log("\nAdd Contact");
+    //Get Old Contacts
+    let data = await readContacts(username, password);
+    let contactList = separateContacts(data);
+
+    //Turn Old contacts into string
+    let newList = "";
+    for(let i = 0; i < contactList.length; i++){
+        newList += textContact(contactList[i]);
+    }
+
+    console.log("Contact List: " + contactList);
+
+    //Add New contact and Save data
+    newList += newContact;
+    await writeContacts(username, password, newList);
+}
+
+/**
+ * editContacts deletes the contact matching id and then addes the modified version to the file.
+ * @param {string} username
+ * @param {string} password
+ * @param {int} id
+ * @param {JSON} newContact
+ */
+export async function editContact(username, password, id, newContact){
+    console.log("\nAdd Contact");
+    //Get Old Contacts
+    let data = await readContacts(username, password);
+    let contactList = separateContacts(data);
+
+    //Turn Old contacts into string
+    let newList = "";
+    for(let i = 0; i < contactList.length; i++){
+        if(i != id)
+            newList += textContact(contactList[i]);
+    }
+
+    //Add New contact and Save data
+    newList += newContact;
+    await writeContacts(username, password, newList);
+}
+
+/**
+ * doesFileExist returns true if the file exists and false if not.
+ * @param {string} filename
+ */
+export function doesFileExist(filename){
+    if(fs.existsSync(filename)){
+        return true;
+    }
+    return false;
 }

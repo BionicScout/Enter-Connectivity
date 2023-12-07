@@ -13,9 +13,12 @@
         });
     </script> 
 
-    <head>
-        <title>Enter-Connectivity</title>
+    <!-- Load Server Request Functions -->
+    <script src="client-request.js"></script>
 
+    <head>
+        <!-- Base File Set Up -->
+        <title>Enter-Connectivity</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -78,7 +81,7 @@
 
         <script>
             //When the Login Button is Pressed
-            $('#LoginButton').on('click', function (e) {
+            $('#LoginButton').on('click', async function (e) {
                 //Get Username and Password input feilds
                 var forms = document.querySelectorAll('.needs-validation');
                 
@@ -99,12 +102,15 @@
                 console.log("Valid Submission");
 
                 //Code to check valid username and password combination
-                var matchingInfo = true;  //CHANGE FALSE
-
+                let matchingInfo = await requestCheckPassword(document.getElementById("Username").value, document.getElementById("Password").value);
+                
                 if(!matchingInfo){
+                    console.log("Did not match");
                     document.getElementById('error-message').style.display = 'block';
                     return;
                 }
+
+                console.log("Matched");
 
 
                 //If username and Password match, record username and password. Then move to Contacts Page
